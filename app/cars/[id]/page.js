@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import CarGallery from "@/components/cars/CarGallery";
 import PurchasePanel from "@/components/cars/PurchasePanel";
@@ -26,7 +27,20 @@ export async function generateMetadata({ params }) {
     return buildCarMetadata(car);
 }
 
-export default async function CarDetailPage({ params }) {
+/**
+ * `params` is URL data: read it inside <Suspense> so navigations show the
+ * skeleton instantly (Next 16 instant-navigation rule). Known cars are
+ * prerendered, so the fallback only flashes for brand-new stock.
+ */
+export default function CarDetailPage({ params }) {
+    return (
+        <Suspense fallback={<CarDetailSkeleton />}>
+            <CarDetail params={params} />
+        </Suspense>
+    );
+}
+
+async function CarDetail({ params }) {
     const { id } = await params;
     const car = await getCarById(id);
     if (!car) notFound();
@@ -50,10 +64,7 @@ export default async function CarDetailPage({ params }) {
                         className="mb-6"
                         items={[
                             { label: "Inventory", href: "/cars" },
-                            {
-                                label: car.brand,
-                                href: `/cars?brand=${encodeURIComponent(car.brand)}`,
-                            },
+                            { label: car.brand, href: `/cars?brand=${encodeURIComponent(car.brand)}` },
                             { label: `${car.year} ${car.title}` },
                         ]}
                     />
@@ -61,13 +72,7 @@ export default async function CarDetailPage({ params }) {
                         <CarGallery
                             images={car.images}
                             title={`${car.year} ${car.title}`}
-                            badge={
-                                <StockBadge
-                                    status={car.stockStatus}
-                                    location={car.location}
-                                    className="shadow-sm"
-                                />
-                            }
+                            badge={<StockBadge status={car.stockStatus} location={car.location} className="shadow-sm" />}
                         />
                         <div className="lg:sticky lg:top-24 lg:self-start">
                             <PurchasePanel car={car} />
@@ -112,5 +117,32 @@ export default async function CarDetailPage({ params }) {
                 </section>
             )}
         </>
+    );
+}
+
+function CarDetailSkeleton() {
+    return (
+        <section className="bg-paper pt-8 pb-14 md:pb-20" aria-busy="true" aria-label="Loading car details">
+            <div className="container-page">
+                <div className="mb-6 h-4 w-72 animate-pulse rounded bg-line" />
+                <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-10">
+                    <div>
+                        <div className="aspect-[16/10] animate-pulse rounded-[var(--radius-card)] bg-line" />
+                        <div className="mt-3 flex gap-3">
+                            {Array.from({ length: 4 }).map((_, i) => (
+                                <div key={i} className="h-20 w-[124px] animate-pulse rounded-lg bg-line" />
+                            ))}
+                        </div>
+                    </div>
+                    <div className="space-y-4 rounded-[var(--radius-card)] border border-line bg-white p-7">
+                        <div className="h-6 w-40 animate-pulse rounded-full bg-line" />
+                        <div className="h-9 w-3/4 animate-pulse rounded bg-line" />
+                        <div className="h-12 w-1/2 animate-pulse rounded bg-line" />
+                        <div className="h-36 animate-pulse rounded-xl bg-line" />
+                        <div className="h-13 animate-pulse rounded-full bg-line" />
+                    </div>
+                </div>
+            </div>
+        </section>
     );
 }
