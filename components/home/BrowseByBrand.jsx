@@ -98,7 +98,7 @@ export default function BrowseByBrand({ tiles = [], brands = [], counts = {} }) 
                                 >
                                     <BrandMark
                                         brand={b}
-                                        size={52}
+                                        size={56}
                                         className="group-hover:border-gold-500"
                                     />
                                     <span className="flex flex-col leading-tight">

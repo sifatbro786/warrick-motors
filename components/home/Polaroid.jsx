@@ -5,7 +5,7 @@ import { m } from "framer-motion";
 import { cn } from "@/lib/utils/format";
 
 /**
- * Handover photo pinned with a strip of tape. Lands at a slight tilt, and
+ * Handover photo printed as a polaroid. Lands at a slight tilt, and
  * straightens + lifts on hover — like picking a print up off the desk.
  */
 export default function Polaroid({ image, alt, caption, date, tilt = -3, delay = 0, className }) {
@@ -26,11 +26,6 @@ export default function Polaroid({ image, alt, caption, date, tilt = -3, delay =
             viewport={{ once: true, amount: 0.4 }}
             transition={{ type: "spring", stiffness: 120, damping: 16, delay }}
         >
-            {/* tape */}
-            <span
-                aria-hidden="true"
-                className="absolute -top-3 left-1/2 h-6 w-20 -translate-x-1/2 rotate-[-4deg] bg-[#efe3c4]/85 shadow-sm [clip-path:polygon(3%_0,97%_4%,100%_92%,0_100%)]"
-            />
             <div className="relative aspect-4/5 overflow-hidden bg-ink-800">
                 <Image
                     src={image}

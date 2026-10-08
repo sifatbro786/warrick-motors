@@ -21,7 +21,7 @@ export default function BrandMark({ brand, size = 56, className }) {
                     alt=""
                     width={size}
                     height={size}
-                    className="h-[62%] w-[62%] object-contain"
+                    className="h-[70%] w-[70%] object-contain"
                 />
             ) : (
                 <span

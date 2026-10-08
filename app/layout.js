@@ -22,7 +22,6 @@ export async function generateMetadata() {
         creator: siteConfig.developer.name,
         formatDetection: { telephone: true, address: true, email: true },
         openGraph: { type: "website", siteName: seo.siteName, locale: seo.locale },
-        icons: { icon: "/logo.png", apple: "/logo.png" },
     };
 }
 
@@ -37,7 +36,7 @@ export default function RootLayout({ children }) {
                 <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
                 <a
                     href="#main"
-                    className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-full focus:bg-ink-900 focus:px-4 focus:py-2 focus:text-white"
+                    className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-60 focus:rounded-full focus:bg-ink-900 focus:px-4 focus:py-2 focus:text-white"
                 >
                     Skip to content
                 </a>

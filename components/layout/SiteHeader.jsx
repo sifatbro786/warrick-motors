@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AnimatePresence, m } from "framer-motion";
 import Logo from "@/components/ui/Logo";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
@@ -12,8 +13,17 @@ import { cn } from "@/lib/utils/format";
 
 /**
  * Routes whose first section is a dark full-bleed hero → header starts transparent.
- * The hero must pull itself under the header (ShowroomHero uses -mt-[72px]).
+ * The hero must pull itself under the header (ShowroomHero uses -mt-18).
  */
+const MENU_ITEM = {
+    hidden: { opacity: 0, y: 14 },
+    show: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+    },
+};
+
 const OVERLAY_ROUTES = new Set(["/"]);
 
 export default function SiteHeader() {
@@ -149,67 +159,120 @@ export default function SiteHeader() {
                                     : "text-ink-900 hover:bg-paper",
                             )}
                         >
-                            <Icon name={open ? "close" : "menu"} size={22} />
+                            <span aria-hidden="true" className="relative block h-4 w-5.5">
+                                <span
+                                    className={cn(
+                                        "absolute left-0 h-0.5 w-full rounded-full bg-current transition-transform duration-300 ease-out",
+                                        open ? "top-1.75 rotate-45" : "top-0",
+                                    )}
+                                />
+                                <span
+                                    className={cn(
+                                        "absolute top-1.75 left-0 h-0.5 w-full rounded-full bg-current transition-opacity duration-200",
+                                        open ? "opacity-0" : "opacity-100",
+                                    )}
+                                />
+                                <span
+                                    className={cn(
+                                        "absolute left-0 h-0.5 rounded-full bg-current transition-[transform,width,top] duration-300 ease-out",
+                                        open ? "top-1.75 w-full -rotate-45" : "top-3.5 w-[65%]",
+                                    )}
+                                />
+                            </span>
                         </button>
                     </div>
                 </div>
             </header>
 
-            {/* Mobile sheet */}
-            <div
-                id="mobile-menu"
-                hidden={!open}
-                className="fixed inset-x-0 top-18 bottom-0 z-30 overflow-y-auto bg-white lg:hidden"
-            >
-                <nav aria-label="Mobile" className="container-page py-6">
-                    <ul className="divide-y divide-line border-y border-line">
-                        {siteConfig.nav.map((item, i) => (
-                            <li key={item.href}>
-                                <Link
-                                    href={item.href}
-                                    className="flex items-center justify-between py-4 font-display text-2xl font-semibold tracking-tight text-ink-900"
+            {/* Mobile sheet — curtain drops from the header, links stagger in */}
+            <AnimatePresence>
+                {open && (
+                    <m.div
+                        id="mobile-menu"
+                        key="mobile-menu"
+                        className="fixed inset-x-0 top-18 bottom-0 z-30 overflow-y-auto bg-white lg:hidden"
+                        initial={{ clipPath: "inset(0 0 100% 0)" }}
+                        animate={{
+                            clipPath: "inset(0 0 0% 0)",
+                            transition: {
+                                duration: 0.55,
+                                ease: [0.22, 1, 0.36, 1],
+                            },
+                        }}
+                        exit={{
+                            clipPath: "inset(0 0 100% 0)",
+                            transition: {
+                                duration: 0.35,
+                                ease: [0.65, 0, 0.35, 1],
+                            },
+                        }}
+                    >
+                        <m.nav
+                            aria-label="Mobile"
+                            className="container-page py-6"
+                            initial="hidden"
+                            animate="show"
+                            exit="hidden"
+                            variants={{
+                                hidden: {},
+                                show: {
+                                    transition: {
+                                        staggerChildren: 0.06,
+                                        delayChildren: 0.12,
+                                    },
+                                },
+                            }}
+                        >
+                            <ul className="divide-y divide-line border-y border-line">
+                                {siteConfig.nav.map((item, i) => (
+                                    <m.li key={item.href} variants={MENU_ITEM}>
+                                        <Link
+                                            href={item.href}
+                                            className="flex items-center justify-between py-4 font-display text-2xl font-semibold tracking-tight text-ink-900"
+                                        >
+                                            <span>
+                                                <span className="nums mr-3 align-middle text-xs font-medium text-gold-600">
+                                                    0{i + 1}
+                                                </span>
+                                                {item.label}
+                                            </span>
+                                            <Icon
+                                                name="arrow-up-right"
+                                                size={20}
+                                                className="text-ink-400"
+                                            />
+                                        </Link>
+                                    </m.li>
+                                ))}
+                            </ul>
+                            <m.div variants={MENU_ITEM} className="mt-8 grid gap-3">
+                                <Button href="/showroom#visit" size="lg" iconRight="arrow-right">
+                                    Book a Showroom Visit
+                                </Button>
+                                <Button
+                                    href={buildWhatsAppLink()}
+                                    variant="whatsapp"
+                                    size="lg"
+                                    icon="whatsapp"
                                 >
-                                    <span>
-                                        <span className="nums mr-3 align-middle text-xs font-medium text-gold-600">
-                                            0{i + 1}
-                                        </span>
-                                        {item.label}
-                                    </span>
-                                    <Icon
-                                        name="arrow-up-right"
-                                        size={20}
-                                        className="text-ink-400"
-                                    />
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                    <div className="mt-8 grid gap-3">
-                        <Button href="/showroom#visit" size="lg" iconRight="arrow-right">
-                            Book a Showroom Visit
-                        </Button>
-                        <Button
-                            href={buildWhatsAppLink()}
-                            variant="whatsapp"
-                            size="lg"
-                            icon="whatsapp"
-                        >
-                            WhatsApp Inquiry
-                        </Button>
-                        <Button
-                            href={telHref(siteConfig.contact.hotline)}
-                            variant="outline"
-                            size="lg"
-                            icon="phone"
-                        >
-                            {siteConfig.contact.hotlineDisplay}
-                        </Button>
-                    </div>
-                    <p className="mt-8 text-sm text-ink-500">
-                        {siteConfig.hours.map((h) => `${h.days}: ${h.time}`).join(" · ")}
-                    </p>
-                </nav>
-            </div>
+                                    WhatsApp Inquiry
+                                </Button>
+                                <Button
+                                    href={telHref(siteConfig.contact.hotline)}
+                                    variant="outline"
+                                    size="lg"
+                                    icon="phone"
+                                >
+                                    {siteConfig.contact.hotlineDisplay}
+                                </Button>
+                            </m.div>
+                            <m.p variants={MENU_ITEM} className="mt-8 text-sm text-ink-500">
+                                {siteConfig.hours.map((h) => `${h.days}: ${h.time}`).join(" · ")}
+                            </m.p>
+                        </m.nav>
+                    </m.div>
+                )}
+            </AnimatePresence>
         </>
     );
 }

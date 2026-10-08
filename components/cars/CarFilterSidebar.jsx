@@ -51,7 +51,7 @@ export default function CarFilterSidebar({ options }) {
 
             {/* Desktop sidebar */}
             <aside aria-label="Filter cars" className="hidden lg:block">
-                <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-card border border-line bg-white p-6 shadow-card no-scrollbar">
+                <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-card border border-line bg-white px-7 pt-6 pb-2 shadow-card no-scrollbar">
                     <FilterPanel {...state} options={options} active={active} />
                 </div>
             </aside>
@@ -76,8 +76,14 @@ export default function CarFilterSidebar({ options }) {
                             aria-modal="true"
                             aria-label="Filter cars"
                             initial={{ y: "100%" }}
-                            animate={{ y: 0, transition: { duration: 0.5, ease: EASE } }}
-                            exit={{ y: "100%", transition: { duration: 0.3, ease: "easeIn" } }}
+                            animate={{
+                                y: 0,
+                                transition: { duration: 0.5, ease: EASE },
+                            }}
+                            exit={{
+                                y: "100%",
+                                transition: { duration: 0.3, ease: "easeIn" },
+                            }}
                             className="absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col rounded-t-3xl bg-white"
                         >
                             <div className="flex items-center justify-between border-b border-line px-5 py-4">
@@ -86,7 +92,7 @@ export default function CarFilterSidebar({ options }) {
                                     aria-hidden="true"
                                 />
                             </div>
-                            <div className="flex-1 overflow-y-auto px-5 pb-6">
+                            <div className="flex-1 overflow-y-auto px-6 pb-6">
                                 <FilterPanel {...state} options={options} active={active} />
                             </div>
                             <div className="border-t border-line p-4">
@@ -116,7 +122,7 @@ function FilterPanel({ filters, update, toggleInList, reset, pending, options, a
             className={cn("transition-opacity", pending && "opacity-70")}
             aria-busy={pending || undefined}
         >
-            <div className="flex items-center justify-between pt-1 pb-5">
+            <div className="flex items-center justify-between border-b border-line pt-1 pb-5">
                 <p className="font-display text-lg font-semibold text-ink-900">
                     Refine
                     {pending && (
@@ -184,7 +190,7 @@ function FilterPanel({ filters, update, toggleInList, reset, pending, options, a
                     {options.brands.map((b) => (
                         <label
                             key={b}
-                            className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-[14px] text-ink-700 hover:bg-paper"
+                            className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-1.5 text-[14px] text-ink-700 hover:bg-paper"
                         >
                             <span className="flex items-center gap-2.5">
                                 <input
@@ -288,23 +294,37 @@ function FilterPanel({ filters, update, toggleInList, reset, pending, options, a
 }
 
 function Group({ legend, children, last = false }) {
+    // div+role=group instead of <fieldset>/<legend>: legends ignore fieldset padding and
+    // were rendering flush against the dashed divider above them.
+    const id = `filter-${legend.toLowerCase().replace(/[^a-z]+/g, "-")}`;
     return (
-        <fieldset className={cn("py-5", !last && "border-b border-dashed border-line")}>
-            <legend className="mb-3 text-[11px] font-semibold tracking-[0.14em] text-ink-500 uppercase">
+        <div
+            role="group"
+            aria-labelledby={id}
+            className={cn("py-6", !last && "border-b border-dashed border-line")}
+        >
+            <p
+                id={id}
+                className="mb-3.5 text-[11px] font-semibold tracking-[0.14em] text-ink-500 uppercase"
+            >
                 {legend}
-            </legend>
+            </p>
             {children}
-        </fieldset>
+        </div>
     );
 }
 
-const DOT = { ready: "bg-ready", transit: "bg-transit", preorder: "bg-preorder" };
+const DOT = {
+    ready: "bg-ready",
+    transit: "bg-transit",
+    preorder: "bg-preorder",
+};
 
 function RadioRow({ name, label, count, checked, onChange, tone }) {
     return (
         <label
             className={cn(
-                "flex cursor-pointer items-center justify-between gap-3 rounded-lg px-2.5 py-2 text-[14px] transition-colors",
+                "flex cursor-pointer items-center justify-between gap-3 rounded-lg px-3 py-2 text-[14px] transition-colors",
                 checked ? "bg-ink-900 text-white" : "text-ink-700 hover:bg-paper",
             )}
         >

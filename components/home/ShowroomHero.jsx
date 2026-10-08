@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils/format";
 
 const SLIDE_MS = 6500;
 
-
 /**
  * Full-bleed hero. Slides crossfade with a slow push-in; the gold progress bar
  * *is* the timer (CSS animation → onAnimationEnd advances), so pausing the bar
@@ -41,7 +40,14 @@ export default function ShowroomHero({ slides = [] }) {
                     key={slide.id}
                     className="absolute inset-0"
                     initial={{ opacity: 0, scale: 1.12 }}
-                    animate={{ opacity: 1, scale: 1.02, transition: { opacity: { duration: 1.4, ease: "easeOut" }, scale: { duration: 8, ease: "linear" } } }}
+                    animate={{
+                        opacity: 1,
+                        scale: 1.02,
+                        transition: {
+                            opacity: { duration: 1.4, ease: "easeOut" },
+                            scale: { duration: 8, ease: "linear" },
+                        },
+                    }}
                     exit={{ opacity: 0, transition: { duration: 1.2, ease: "easeIn" } }}
                 >
                     <Image
@@ -57,34 +63,50 @@ export default function ShowroomHero({ slides = [] }) {
             </AnimatePresence>
 
             {/* Legibility layers: left-weighted wash + bottom fade into the stats band */}
-            <div aria-hidden="true" className="absolute inset-0 bg-linear-to-r from-ink-950/90 via-ink-950/55 to-ink-950/10" />
-            <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-ink-950 via-ink-950/70 to-transparent" />
-            <div aria-hidden="true" className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-ink-950/70 to-transparent" />
+            <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-linear-to-r from-ink-950/90 via-ink-950/55 to-ink-950/10"
+            />
+            <div
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-ink-950 via-ink-950/70 to-transparent"
+            />
+            <div
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-ink-950/70 to-transparent"
+            />
 
             <div className="container-page relative z-10 flex flex-1 flex-col justify-end pt-30 pb-36 md:pb-44">
                 <p className="eyebrow anim-fade-up mb-6 flex items-center gap-3 text-gold-300">
-                    <span className="h-px w-10 bg-gold-400/60" aria-hidden="true" />
                     Japan · UK · UAE — Direct to Dhaka
                 </p>
 
                 <h1 className="max-w-3xl font-display text-[2.35rem] leading-[1.04] font-bold tracking-[-0.035em] text-white sm:text-[3.3rem] lg:text-[4.15rem]">
                     {[
                         <>Premium &amp;</>,
-                        <span key="a" className="text-gold-300">Direct Imported</span>,
+                        <span key="a" className="text-gold-300">
+                            Direct Imported
+                        </span>,
                         <>Cars in Bangladesh</>,
                     ].map((line, i) => (
                         <span key={i} className="block overflow-hidden pb-[0.06em]">
-                            <span className="anim-rise block" style={{ animationDelay: `${150 + i * 120}ms` }}>
+                            <span
+                                className="anim-rise block"
+                                style={{ animationDelay: `${150 + i * 120}ms` }}
+                            >
                                 {line}
                             </span>
                         </span>
                     ))}
                 </h1>
 
-                <div className="anim-fade-up mt-6 flex max-w-xl flex-col gap-8" style={{ animationDelay: "550ms" }}>
+                <div
+                    className="anim-fade-up mt-6 flex max-w-xl flex-col gap-8"
+                    style={{ animationDelay: "550ms" }}
+                >
                     <p className="text-base leading-relaxed text-white/80 sm:text-lg">
-                        Original imports from Japan and the world&apos;s top marques. See them in person at our
-                        showroom and take a test drive.
+                        Original imports from Japan and the world&apos;s top marques. See them in
+                        person at our showroom and take a test drive.
                     </p>
                     <div className="flex flex-wrap gap-3">
                         <Button href="/cars" size="lg" iconRight="arrow-right">
@@ -120,7 +142,11 @@ export default function ShowroomHero({ slides = [] }) {
                             className="group mt-1 inline-flex items-center gap-2 font-display text-lg font-semibold text-white"
                         >
                             {slide.caption}
-                            <Icon name="arrow-up-right" size={18} className="text-gold-300 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            <Icon
+                                name="arrow-up-right"
+                                size={18}
+                                className="text-gold-300 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                            />
                         </Link>
                     </m.div>
                 </AnimatePresence>
@@ -157,7 +183,16 @@ export default function ShowroomHero({ slides = [] }) {
     );
 }
 
-function SlideControls({ slides, index, paused, userPaused, onSelect, onEnd, onTogglePause, compact = false }) {
+function SlideControls({
+    slides,
+    index,
+    paused,
+    userPaused,
+    onSelect,
+    onEnd,
+    onTogglePause,
+    compact = false,
+}) {
     return (
         <div className="flex items-center gap-4">
             <span className="nums font-display text-sm font-semibold text-white">
@@ -180,7 +215,10 @@ function SlideControls({ slides, index, paused, userPaused, onSelect, onEnd, onT
                                 <span
                                     key={`${s.id}-${index}`}
                                     onAnimationEnd={onEnd}
-                                    className={cn("absolute inset-0 origin-left bg-gold-400", paused && "[animation-play-state:paused]")}
+                                    className={cn(
+                                        "absolute inset-0 origin-left bg-gold-400",
+                                        paused && "[animation-play-state:paused]",
+                                    )}
                                     style={{ animation: `progress ${SLIDE_MS}ms linear forwards` }}
                                 />
                             )}
@@ -200,7 +238,13 @@ function SlideControls({ slides, index, paused, userPaused, onSelect, onEnd, onT
                 {userPaused ? (
                     <Icon name="play" size={15} />
                 ) : (
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                    >
                         <rect x="6" y="5" width="4" height="14" rx="1" />
                         <rect x="14" y="5" width="4" height="14" rx="1" />
                     </svg>

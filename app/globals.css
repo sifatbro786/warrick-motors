@@ -81,22 +81,6 @@
             transform: translateX(-50%);
         }
     }
-    @keyframes rise {
-        from {
-            transform: translateY(105%);
-        }
-        to {
-            transform: translateY(0);
-        }
-    }
-    @keyframes progress {
-        from {
-            transform: scaleX(0);
-        }
-        to {
-            transform: scaleX(1);
-        }
-    }
     @keyframes fade-up {
         from {
             opacity: 0;
@@ -106,6 +90,26 @@
             opacity: 1;
             transform: translateY(0);
         }
+    }
+}
+
+/* Keyframes used from inline styles / custom utilities live OUTSIDE @theme:
+   Tailwind v4 drops @theme keyframes that no --animate-* token references
+   (that silently broke the hero autoplay timer). */
+@keyframes rise {
+    from {
+        transform: translateY(105%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+@keyframes progress {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
     }
 }
 

@@ -18,6 +18,7 @@ import {
 } from "@/lib/services/content.service";
 import { buildMetadata } from "@/lib/seo/metadata";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { siteConfig } from "@/lib/config/site";
 
 export const generateMetadata = () => buildMetadata({ key: "about", path: "/about" });
 
@@ -106,6 +107,58 @@ export default async function AboutPage() {
                 </div>
             </section>
 
+            {/* Founder */}
+            {story.founder && (
+                <section className="relative overflow-hidden bg-paper-warm py-16 md:py-24">
+                    <div className="paper-grain absolute inset-0" aria-hidden="true" />
+                    <div className="container-page relative grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+                        <Reveal className="relative mx-auto w-full max-w-sm lg:col-span-4 lg:max-w-none">
+                            <figure className="relative -rotate-2 bg-white p-3 pb-5 shadow-[0_24px_50px_-28px_rgb(10_17_30/0.5)]">
+                                <div className="relative aspect-4/5 overflow-hidden bg-ink-800">
+                                    <Image
+                                        src={story.founder.image}
+                                        alt={story.founder.imageAlt}
+                                        fill
+                                        sizes="(min-width: 1024px) 30vw, 90vw"
+                                        className="scale-[1.1] object-cover object-[50%_25%]"
+                                    />
+                                </div>
+                                <figcaption className="mt-3 px-1 text-[12.5px] font-medium text-ink-700">
+                                    {story.founder.name ? `${story.founder.name} · ` : ""}
+                                    {story.founder.role}
+                                </figcaption>
+                            </figure>
+                        </Reveal>
+                        <Reveal className="lg:col-span-8" delay={0.1}>
+                            <p className="eyebrow mb-5 flex items-center gap-3 text-gold-700">
+                                <span aria-hidden="true" className="h-px w-8 bg-gold-500/50" />A
+                                note from the founder
+                            </p>
+                            <blockquote className="relative">
+                                <Icon
+                                    name="quote"
+                                    size={56}
+                                    strokeWidth={0}
+                                    className="absolute -top-6 -left-2 fill-gold-300/60 text-gold-300/60"
+                                />
+                                <p className="relative font-display text-[1.6rem] leading-[1.3] font-semibold tracking-[-0.02em] text-ink-900 sm:text-[2rem]">
+                                    {story.founder.quote}
+                                </p>
+                            </blockquote>
+                            <p className="mt-6 text-[14px] text-ink-600">
+                                {story.founder.name && (
+                                    <span className="font-semibold text-ink-900">
+                                        {story.founder.name}
+                                    </span>
+                                )}
+                                {story.founder.name && " — "}
+                                {story.founder.role}, {siteConfig.legalName.replace(/\.$/, "")}
+                            </p>
+                        </Reveal>
+                    </div>
+                </section>
+            )}
+
             {/* Process */}
             <section className="bg-ink-900 py-16 text-white md:py-24">
                 <div className="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
@@ -131,8 +184,8 @@ export default async function AboutPage() {
                 </div>
             </section>
 
-            {/* Documents — manila folder */}
-            <section className="paper-grain bg-paper-warm py-16 md:py-24">
+            {/* Documents — manila folder (stone, so it alternates with the sand sections around it) */}
+            <section className="bg-paper py-16 md:py-24">
                 <div className="container-page grid items-center gap-12 lg:grid-cols-12">
                     <Reveal className="lg:col-span-5">
                         <p className="eyebrow mb-4 flex items-center gap-3 text-gold-700">
