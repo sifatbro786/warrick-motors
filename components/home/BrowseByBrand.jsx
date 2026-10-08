@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SectionHeading, { Accent } from "@/components/ui/SectionHeading";
 import Icon from "@/components/ui/Icon";
+import BrandMark from "@/components/ui/BrandMark";
 import { Stagger, StaggerItem } from "@/components/motion/Reveal";
 
 /**
@@ -10,6 +11,7 @@ import { Stagger, StaggerItem } from "@/components/motion/Reveal";
  * to a useful pre-order-friendly empty state later.
  */
 export default function BrowseByBrand({ tiles = [], brands = [], counts = {} }) {
+    // brands: [{ name, monogram, origin, logo }] — duplicated for a seamless loop
     const rail = [...brands, ...brands];
     return (
         <section className="relative overflow-hidden bg-paper py-20 md:py-28">
@@ -70,21 +72,31 @@ export default function BrowseByBrand({ tiles = [], brands = [], counts = {} }) 
                 </Stagger>
             </div>
 
-            {/* Wordmark rail — diamond separators echo the crown logo */}
-            <div className="relative mt-16 border-y border-line py-6 md:mt-20 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                <ul className="flex w-max animate-marquee items-center gap-10 hover:[animation-play-state:paused]" aria-label="Brands we import">
-                    {rail.map((b, i) => (
-                        <li key={`${b}-${i}`} aria-hidden={i >= brands.length || undefined} className="flex items-center gap-10">
-                            <Link
-                                href={`/cars?brand=${encodeURIComponent(b)}`}
-                                tabIndex={i >= brands.length ? -1 : undefined}
-                                className="font-display text-2xl font-bold tracking-[-0.02em] whitespace-nowrap text-ink-300 uppercase transition-colors hover:text-ink-900 md:text-3xl"
-                            >
-                                {b}
-                            </Link>
-                            <span aria-hidden="true" className="h-2 w-2 rotate-45 bg-gold-400" />
-                        </li>
-                    ))}
+            {/* Brand rail — badge + name, never pauses (client request) */}
+            <div className="relative mt-16 border-y border-line bg-paper-warm/40 py-7 md:mt-20 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+                <ul className="flex w-max animate-marquee items-center gap-14" aria-label="Brands we import">
+                    {rail.map((b, i) => {
+                        const clone = i >= brands.length;
+                        return (
+                            <li key={`${b.name}-${i}`} aria-hidden={clone || undefined}>
+                                <Link
+                                    href={`/cars?brand=${encodeURIComponent(b.name)}`}
+                                    tabIndex={clone ? -1 : undefined}
+                                    className="group flex items-center gap-3.5"
+                                >
+                                    <BrandMark brand={b} size={52} className="group-hover:border-gold-500" />
+                                    <span className="flex flex-col leading-tight">
+                                        <span className="font-display text-[15px] font-bold tracking-[-0.01em] whitespace-nowrap text-ink-700 uppercase transition-colors group-hover:text-ink-900">
+                                            {b.name}
+                                        </span>
+                                        <span className="text-[11.5px] whitespace-nowrap text-ink-400">
+                                            {b.origin} · {String(counts[b.name] || 0).padStart(2, "0")} in stock
+                                        </span>
+                                    </span>
+                                </Link>
+                            </li>
+                        );
+                    })}
                 </ul>
             </div>
         </section>

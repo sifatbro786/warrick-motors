@@ -16,6 +16,7 @@ import {
     getShowroomImage,
     getDeliveries,
     getTestimonials,
+    getBrands,
 } from "@/lib/services/content.service";
 import { siteConfig } from "@/lib/config/site";
 
@@ -38,12 +39,13 @@ export default async function HomePage() {
             getDeliveries(),
             getTestimonials(),
         ]);
+    const brands = await getBrands(filterOptions.brands);
 
     return (
         <>
             <ShowroomHero slides={slides} />
             <StatsBand stats={stats} filterOptions={filterOptions} />
-            <BrowseByBrand tiles={brandTiles} brands={filterOptions.brands} counts={filterOptions.counts.byBrand} />
+            <BrowseByBrand tiles={brandTiles} brands={brands} counts={filterOptions.counts.byBrand} />
             <FeaturedCars cars={featured} />
             <StockStatusSection byStatus={byStatus} />
             <WhyWarrick points={why.points} image={why.image} />

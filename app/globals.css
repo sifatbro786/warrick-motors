@@ -110,6 +110,25 @@
         text-wrap: pretty;
     }
 
+    /* Range inputs (loan estimator) — navy thumb with a white ring */
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 20px;
+        width: 20px;
+        border-radius: 999px;
+        background: var(--color-ink-900);
+        border: 3px solid #fff;
+        box-shadow: 0 1px 4px rgb(10 17 30 / 0.35);
+    }
+    input[type="range"]::-moz-range-thumb {
+        height: 20px;
+        width: 20px;
+        border-radius: 999px;
+        background: var(--color-ink-900);
+        border: 3px solid #fff;
+        box-shadow: 0 1px 4px rgb(10 17 30 / 0.35);
+    }
+
     ::selection {
         @apply bg-gold-300 text-ink-900;
     }

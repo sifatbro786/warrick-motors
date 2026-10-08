@@ -31,8 +31,8 @@
 |---|-------|-------|--------|
 | 1 | Foundation | Tokens, fonts, layout shell (header/footer/floating WhatsApp), mock data, service layer, filter contract, core car components | ✅ Done |
 | 2 | Home page | Hero slider + quick search, featured cars, status tabs, Why Warrick, showroom CTA, deliveries & testimonials, brand rail | ✅ Done |
-| 3 | Inventory | `/cars` with URL-driven sidebar filters + sort + pagination, `/cars/[id]` gallery/specs/price/CTAs, `ShowroomVisitModal` | ⏳ Next |
-| 4 | Forms & pages | `/pre-order`, `/contact`, `/showroom`, `/about`; form state via Server Actions stubs (`lib/actions/*`) + validation | ⬜ |
+| 3 | Inventory | `/cars` with URL-driven sidebar filters + sort + pagination, `/cars/[id]` gallery/specs/price/CTAs, `ShowroomVisitModal` | ✅ Done |
+| 4 | Forms & pages | `/pre-order`, `/contact`, `/showroom`, `/about`; form state via Server Actions stubs (`lib/actions/*`) + validation | ⏳ Next |
 | 5 | Polish & SEO | metadata per route, sitemap/robots, JSON-LD (AutoDealer + Car), loading/error/not-found, a11y + perf pass, final docs | ⬜ |
 
 ## Phase log
@@ -83,3 +83,36 @@ Notes for next phase:
 - ⚠️ Testimonials & delivery photos in `lib/data/content.js` are PLACEHOLDERS — replace with real, consented stories before launch.
 - Links already point to `/cars?brand=…&model=…&budget=…&status=…` — Phase 3 `/cars` must parse these via `parseCarFilters`.
 - `/showroom#visit` is the target of every "Book a Visit"/"Test Drive" CTA — Phase 3 adds `ShowroomVisitModal`, Phase 4 the `/showroom` page.
+
+### Phase 3 — Inventory & car details (2026-10-08) ✅
+Client fixes first:
+- Hero heading smaller (max 4.15rem) and hero capped at 840px tall; "Direct Imported" is plain gold — no underline.
+- Brand rail: monogram badge + name + origin + stock count per brand (`components/ui/BrandMark.jsx`, `lib/data/brands.js`);
+  marquee never pauses on hover. Official logos: drop SVGs in `public/brands/` and set `logo` in `lib/data/brands.js`
+  (we don't redraw trademarked logos).
+
+New routes:
+- `/cars` (`app/cars/page.js`) — Partial Prerender: static header band + facets, results stream from `searchParams` inside `<Suspense>`.
+- `/cars/[id]` (`app/cars/[id]/page.js`) — `generateStaticParams` prerenders all 16 cars; `generateMetadata` per car;
+  `not-found.js` for sold/unknown ids. `[id]` accepts slug, id or stock number.
+
+Components:
+- `components/layout/PageHeader.jsx` (+ `Breadcrumbs`) — navy intro band for every inner page
+- `components/cars/CarFilterSidebar.jsx` — sticky sidebar (desktop) / bottom sheet (mobile); availability, budget, brand(+model), body, fuel, year
+- `components/cars/InventoryToolbar.jsx` — result count, removable filter pills, sort
+- `components/cars/InventoryResults.jsx` — grid, pagination (12/page), empty state → pre-order, skeleton
+- `components/cars/CarGallery.jsx` — slide/crossfade, swipe, arrows, keyboard, thumbnails, fullscreen lightbox
+- `components/cars/PurchasePanel.jsx` — sticky buy box; CTA text follows stock status
+- `components/cars/CarSpecs.jsx` — `PerformanceBand` (navy figures) + `CarDetailsBody` (overview, highlights, spec & paperwork tables)
+- `components/cars/LoanEstimator.jsx` — indicative EMI (50% min down payment, ≤5 yrs, rate slider)
+- `components/forms/ShowroomVisitModal.jsx` + `ShowroomVisitButton.jsx` — `useActionState` form, field errors, focus trap, success + reference
+- `lib/hooks/useCarFilters.js` — URL-backed filter state (router.replace in a transition)
+- `lib/actions/visit.actions.js` — `requestShowroomVisit` Server Action (validates + logs; TODO Mongo/Nodemailer)
+- `lib/validation/lead.js` — shared sanitising/validation (BD mobile format, honeypot, date ≥ today)
+
+Verified: build + lint; filters/sort/empty state/pagination via URL; gallery next + lightbox; modal shows field errors then succeeds;
+no horizontal overflow at 390px on `/`, `/cars`, `/cars/[id]`.
+
+Notes for next phase:
+- Header/hero "Book a Visit" still links to `/showroom#visit` — Phase 4 builds `/showroom` with an inline visit form (reuse the action).
+- Form contract for every new form: Server Action returns `{ ok, message, fieldErrors?, reference? }`.

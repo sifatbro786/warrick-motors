@@ -12,7 +12,7 @@ export default function SpecChips({ car, className, variant = "chips" }) {
 
     if (variant === "grid") {
         return (
-            <dl className={cn("grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-4", className)}>
+            <dl className={cn("grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line", className)}>
                 {items.map((it) => (
                     <div key={it.label} className="bg-white px-4 py-3.5">
                         <dt className="flex items-center gap-1.5 text-[11.5px] font-medium tracking-wide text-ink-400 uppercase">
