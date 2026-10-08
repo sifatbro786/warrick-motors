@@ -4,7 +4,6 @@
 > Update the "Phase log" section at the end of every phase.
 
 ## Stack (locked)
-
 - Next.js **16.4** (App Router, Turbopack, `cacheComponents: true`, `partialPrefetching: true`, React Compiler)
 - React **19.3**, Tailwind CSS **v4** (CSS-first `@theme` in `app/globals.css`, loaded via `@tailwindcss/turbopack`)
 - **Pure JavaScript** — no TypeScript. Components `.jsx`, app route files `.js`.
@@ -12,7 +11,6 @@
 - ⚠️ Next 16.4 differs from older docs — check `node_modules/next/dist/docs/` before using an API (see `AGENTS.md`).
 
 ## Design direction
-
 - References: Kraftwerk Elite (editorial type, dark spec band, underline-input inquiry form),
   rRw (hero with overlapping search bar, tall brand tiles), Marlin Motors (search filter card, loan calculator).
 - Palette: matte navy `ink-900 #0A111E` / slate `ink-800 #0F172A`, paper `#F8FAFC`, warm band `#F3F1EC`,
@@ -29,21 +27,18 @@
   dashed price divider, paper grain on light bands. **No** glow, purple gradients, glass stat bars, count-up numbers.
 
 ## 5-Phase plan
-
-| #   | Phase         | Scope                                                                                                                         | Status  |
-| --- | ------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------- |
-| 1   | Foundation    | Tokens, fonts, layout shell (header/footer/floating WhatsApp), mock data, service layer, filter contract, core car components | ✅ Done |
-| 2   | Home page     | Hero slider + quick search, featured cars, status tabs, Why Warrick, showroom CTA, deliveries & testimonials, brand rail      | ✅ Done |
-| 3   | Inventory     | `/cars` with URL-driven sidebar filters + sort + pagination, `/cars/[id]` gallery/specs/price/CTAs, `ShowroomVisitModal`      | ✅ Done |
-| 4   | Forms & pages | `/pre-order`, `/contact`, `/showroom`, `/about`; form state via Server Actions stubs (`lib/actions/*`) + validation           | ⏳ Next |
-| 5   | Polish & SEO  | metadata per route, sitemap/robots, JSON-LD (AutoDealer + Car), loading/error/not-found, a11y + perf pass, final docs         | ⬜      |
+| # | Phase | Scope | Status |
+|---|-------|-------|--------|
+| 1 | Foundation | Tokens, fonts, layout shell (header/footer/floating WhatsApp), mock data, service layer, filter contract, core car components | ✅ Done |
+| 2 | Home page | Hero slider + quick search, featured cars, status tabs, Why Warrick, showroom CTA, deliveries & testimonials, brand rail | ✅ Done |
+| 3 | Inventory | `/cars` with URL-driven sidebar filters + sort + pagination, `/cars/[id]` gallery/specs/price/CTAs, `ShowroomVisitModal` | ✅ Done |
+| 4 | Forms & pages | `/pre-order`, `/contact`, `/showroom`, `/about`; form state via Server Actions stubs (`lib/actions/*`) + validation | ✅ Done |
+| 5 | Polish & SEO | metadata per route, sitemap/robots, JSON-LD (AutoDealer + Car), loading/error/not-found, a11y + perf pass, final docs | ⏳ Next (SEO/JSON-LD already done) |
 
 ## Phase log
 
 ### Phase 1 — Foundation (2026-10-08) ✅
-
 Files created:
-
 - `next.config.mjs` — image `qualities`, AVIF/WebP, `remotePatterns` (Unsplash/Pexels)
 - `app/globals.css` — full token system + utilities (`container-page`, `eyebrow`, `nums`, `text-display`, `paper-grain`, `no-scrollbar`)
 - `app/fonts.js` + `app/fonts/*.woff2` — self-hosted fonts via `next/font/local`
@@ -60,19 +55,16 @@ Files created:
 - `components/cars/` — `CarCard`, `CarImage` (fallback on broken photo), `StockBadge`, `SpecChips`, `PriceTag`
 
 Notes for next phase:
-
 - Header supports a transparent "overlay" mode — add `"/"` to `OVERLAY_ROUTES` in `SiteHeader.jsx` when the dark hero lands,
   and pull the hero under the header (`-mt-[72px]`).
 - Car photos are Unsplash shots of the same body style; real stock photos come from the admin later.
 
 ### Phase 2 — Home page (2026-10-08) ✅
-
 Client feedback applied: no italic type; accent = colour + drawn underline; page never all-white; framer-motion animations.
 
 Added dependency: `framer-motion@^14` (run `npm install`).
 
 Files:
-
 - `app/page.js` — composes the home sections; fetches everything in parallel from services
 - `components/home/` — `ShowroomHero` (3-slide crossfade, gold progress bar drives autoplay, pause button, no autoplay
   under reduced-motion), `QuickSearch` (status toggles + brand→model→budget, GET `next/form` to `/cars`),
@@ -88,28 +80,23 @@ Files:
 - Mobile: featured + status cards become swipe rails (snap) instead of a long stack
 
 Notes for next phase:
-
 - ⚠️ Testimonials & delivery photos in `lib/data/content.js` are PLACEHOLDERS — replace with real, consented stories before launch.
 - Links already point to `/cars?brand=…&model=…&budget=…&status=…` — Phase 3 `/cars` must parse these via `parseCarFilters`.
 - `/showroom#visit` is the target of every "Book a Visit"/"Test Drive" CTA — Phase 3 adds `ShowroomVisitModal`, Phase 4 the `/showroom` page.
 
 ### Phase 3 — Inventory & car details (2026-10-08) ✅
-
 Client fixes first:
-
 - Hero heading smaller (max 4.15rem) and hero capped at 840px tall; "Direct Imported" is plain gold — no underline.
 - Brand rail: monogram badge + name + origin + stock count per brand (`components/ui/BrandMark.jsx`, `lib/data/brands.js`);
   marquee never pauses on hover. Official logos: drop SVGs in `public/brands/` and set `logo` in `lib/data/brands.js`
   (we don't redraw trademarked logos).
 
 New routes:
-
 - `/cars` (`app/cars/page.js`) — Partial Prerender: static header band + facets, results stream from `searchParams` inside `<Suspense>`.
 - `/cars/[id]` (`app/cars/[id]/page.js`) — `generateStaticParams` prerenders all 16 cars; `generateMetadata` per car;
   `not-found.js` for sold/unknown ids. `[id]` accepts slug, id or stock number.
 
 Components:
-
 - `components/layout/PageHeader.jsx` (+ `Breadcrumbs`) — navy intro band for every inner page
 - `components/cars/CarFilterSidebar.jsx` — sticky sidebar (desktop) / bottom sheet (mobile); availability, budget, brand(+model), body, fuel, year
 - `components/cars/InventoryToolbar.jsx` — result count, removable filter pills, sort
@@ -127,29 +114,64 @@ Verified: build + lint; filters/sort/empty state/pagination via URL; gallery nex
 no horizontal overflow at 390px on `/`, `/cars`, `/cars/[id]`.
 
 Notes for next phase:
-
 - Header/hero "Book a Visit" still links to `/showroom#visit` — Phase 4 builds `/showroom` with an inline visit form (reuse the action).
 - Form contract for every new form: Server Action returns `{ ok, message, fieldErrors?, reference? }`.
 
 ### Pre-Phase 4 — FAQ, legal, SEO, speed (2026-10-08) ✅
-
 - **FAQ** on home (`components/home/FaqSection.jsx` + `FaqAccordion.jsx`), data `faqs` in `lib/data/content.js`, emits FAQPage JSON-LD.
 - **Legal pages** `/terms`, `/privacy` (`components/legal/LegalPage.jsx`, content `lib/data/legal.js` — ⚠️ lawyer review before launch). Linked in footer.
 - **Footer**: "© 2026 Warrick Motors Ltd. All rights reserved." (double-period bug fixed) · Terms · Privacy · "Developed by STR Solutions LTD" → https://strsltd.com.
   Hours moved into the "Visit Us" column. Developer info lives in `siteConfig.developer`.
 - **SEO system (dashboard-ready)**
-    - `lib/data/seo.js` = registry: `seoDefaults` + `pageSeo[key]` (title, description, keywords, noindex, image).
-    - `lib/services/seo.service.js` (cache tag `seo`) → admin later saves to Mongo + `revalidateTag("seo")`.
-    - `lib/seo/metadata.js` → `buildMetadata({ key, path })` for pages, `buildCarMetadata(car)` (uses `car.seo` overrides if present).
-    - `lib/seo/jsonld.js` + `components/seo/JsonLd.jsx`: AutoDealer (+ Chattogram department, geo, opening hours), WebSite + SearchAction,
-      BreadcrumbList, Car + Offer (BDT), ItemList (inventory), FAQPage.
-    - `app/sitemap.js` (static routes + all cars + images), `app/robots.js`, `app/manifest.js`, `app/opengraph-image.png` (static branded share image).
-    - Set `NEXT_PUBLIC_SITE_URL` in `.env.local` (see `.env.example`) — canonical/sitemap/OG URLs depend on it.
+  - `lib/data/seo.js` = registry: `seoDefaults` + `pageSeo[key]` (title, description, keywords, noindex, image).
+  - `lib/services/seo.service.js` (cache tag `seo`) → admin later saves to Mongo + `revalidateTag("seo")`.
+  - `lib/seo/metadata.js` → `buildMetadata({ key, path })` for pages, `buildCarMetadata(car)` (uses `car.seo` overrides if present).
+  - `lib/seo/jsonld.js` + `components/seo/JsonLd.jsx`: AutoDealer (+ Chattogram department, geo, opening hours), WebSite + SearchAction,
+    BreadcrumbList, Car + Offer (BDT), ItemList (inventory), FAQPage.
+  - `app/sitemap.js` (static routes + all cars + images), `app/robots.js`, `app/manifest.js`, `app/opengraph-image.png` (static branded share image).
+  - Set `NEXT_PUBLIC_SITE_URL` in `.env.local` (see `.env.example`) — canonical/sitemap/OG URLs depend on it.
 - **Speed**
-    - framer-motion via `LazyMotion` + `m.*` (strict) — use `m`, never `motion`, in new components.
-    - Hero text/search entry animations are pure CSS (`anim-rise`, `anim-fade-up` utilities) → visible before hydration.
-    - `images.minimumCacheTTL` 30 days, `poweredByHeader: false`. `inlineCss` tested and rejected (duplicates CSS into RSC payload).
-    - Contrast fixes: `gold-600` darkened (AA), `gold-accent` for large headings, darker `preorder` & `whatsapp` tokens, light-surface labels use `ink-500`.
+  - framer-motion via `LazyMotion` + `m.*` (strict) — use `m`, never `motion`, in new components.
+  - Hero text/search entry animations are pure CSS (`anim-rise`, `anim-fade-up` utilities) → visible before hydration.
+  - `images.minimumCacheTTL` 30 days, `poweredByHeader: false`. `inlineCss` tested and rejected (duplicates CSS into RSC payload).
+  - Contrast fixes: `gold-600` darkened (AA), `gold-accent` for large headings, darker `preorder` & `whatsapp` tokens, light-surface labels use `ink-500`.
 - **Lighthouse (local, photos blocked in sandbox so LCP is text):**
   desktop `/` 99 · `/cars` 100; mobile `/` ~83, `/cars` ~80, `/cars/[id]` ~94, `/terms` 98. Accessibility 100 on `/`, `/cars`, `/cars/[id]`, `/privacy`; SEO 100 everywhere.
   Remaining mobile cost is the React/Next runtime JS (~200KB gzip) — re-run Lighthouse on the real host with real photos.
+
+### Hotfix — car gallery images (2026-10-08) ✅
+- Symptom: on `/cars/[id]` only photo 1 showed; photos 2–4 and fullscreen never loaded.
+- Cause: `/_next/image` downloaded multi-MB Unsplash originals and **timed out (504 after 7s)** on the local connection.
+- Fix: `lib/utils/image-loader.js` + `components/ui/SmartImage.jsx` — Unsplash/Pexels photos are resized by their own CDN
+  (`?w=&q=&auto=format`); local/admin images still use Next's optimizer. Use `SmartImage` instead of `next/image` everywhere
+  (except `Logo`/`BrandMark` which are local).
+- `/cars/[id]` content now renders inside `<Suspense>` with a skeleton (Next 16.4 instant-navigation rule for `params`).
+
+### Phase 4 — Pre-order, Showroom, About, Contact (2026-10-08) ✅
+Pages:
+- `/pre-order` — prefill via `?brand=&model=`, popular-request chips, 3-part form, "how it works" timeline, cars currently on order.
+- `/showroom` — gallery mosaic, 6 services (navy), both locations with click-to-load maps, inline booking at `#visit`
+  (all "Book a Visit" links now land here).
+- `/about` — story + stamp, stats, 6-step import timeline (gold line fills on scroll), "vehicle file" document checklist,
+  deliveries/testimonials, pre-order CTA.
+- `/contact` — contact channels, hours, editorial underline form (Kraftwerk style), location cards.
+
+Forms (one contract: Server Action returns `{ ok, message, fieldErrors?, reference? }`):
+- `components/forms/fields.jsx` — shared Field/Select/ChoiceChips/Honeypot/FormError/FormSuccess/`fieldAria`/`inputClass` (box | underline)
+- `components/forms/ShowroomVisitForm.jsx` (inline + inside `ShowroomVisitModal`), `PreOrderForm.jsx`, `ContactForm.jsx`
+- `lib/actions/visit.actions.js` (`requestShowroomVisit`), `lib/actions/lead.actions.js` (`requestPreOrder`, `sendContactMessage`)
+  — validate + `console.info` today; TODO markers show where Mongo `Lead.create` + Nodemailer go.
+- `lib/validation/lead.js` — `validateVisit`, `validatePreOrder`, `validateContact` (BD mobile, email, honeypot, year range).
+- Date inputs set `min` on focus (no `new Date()` during prerender).
+
+Other: `components/showroom/MapEmbed.jsx` (map loads only on click — no Google JS until asked), `LocationCards.jsx`,
+`components/about/ProcessTimeline.jsx`; content in `lib/data/content.js` (preOrderSteps, popularRequests, importProcess,
+aboutStory, documentsYouGet, services, showroomGallery).
+
+Verified: build + lint; every form shows field errors then succeeds (server log shows `[lead:*]`); prefill works; map loads on click;
+modal still works; no horizontal overflow at 390px; Lighthouse a11y 100 / SEO 100 on all four pages
+(perf: showroom 94, about 94, contact 97, pre-order 79 — form-heavy client JS).
+
+Notes for Phase 5:
+- Add route-level `loading.js` / `error.js` / root `not-found.js`, final perf pass on pre-order, and a backend hand-off checklist.
+- ⚠️ Testimonials, delivery photos, "since 2014" story and stats are placeholders — confirm with client.

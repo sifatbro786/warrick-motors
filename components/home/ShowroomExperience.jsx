@@ -20,13 +20,22 @@ export default function ShowroomExperience({ image, showrooms = [], hours = [] }
 
     return (
         <section ref={ref} className="relative overflow-hidden bg-ink-950 text-white">
-            <div className="grid lg:min-h-[720px] lg:grid-cols-12">
+            <div className="grid lg:min-h-180 lg:grid-cols-12">
                 {/* Photo */}
-                <div className="relative h-[380px] overflow-hidden sm:h-[480px] lg:order-2 lg:col-span-7 lg:h-auto">
+                <div className="relative h-95 overflow-hidden sm:h-120 lg:order-2 lg:col-span-7 lg:h-auto">
                     <m.div style={{ y }} className="absolute inset-[-12%_0]">
-                        <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 60vw, 100vw" className="object-cover" />
+                        <Image
+                            src={image.src}
+                            alt={image.alt}
+                            fill
+                            sizes="(min-width: 1024px) 60vw, 100vw"
+                            className="object-cover"
+                        />
                     </m.div>
-                    <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-transparent lg:bg-gradient-to-r lg:from-ink-950 lg:via-ink-950/20" />
+                    <div
+                        aria-hidden="true"
+                        className="absolute inset-0 bg-linear-to-t from-ink-950 via-transparent to-transparent lg:bg-linear-to-r lg:from-ink-950 lg:via-ink-950/20"
+                    />
 
                     <m.div
                         style={{ y: badgeY }}
@@ -35,7 +44,9 @@ export default function ShowroomExperience({ image, showrooms = [], hours = [] }
                         <p className="flex items-center gap-2 text-[12px] font-semibold tracking-wide text-gold-300 uppercase">
                             <span className="h-1.5 w-1.5 rounded-full bg-ready" /> Open today
                         </p>
-                        <p className="nums mt-1 font-display text-lg font-semibold">{hours[0]?.time}</p>
+                        <p className="nums mt-1 font-display text-lg font-semibold">
+                            {hours[0]?.time}
+                        </p>
                         <p className="text-[12.5px] text-ink-300">Free tea, no sales pressure.</p>
                     </m.div>
                 </div>
@@ -52,14 +63,18 @@ export default function ShowroomExperience({ image, showrooms = [], hours = [] }
                             Walk the floor. Sit inside. <Accent tone="dark">Drive it.</Accent>
                         </h2>
                         <p className="mt-5 max-w-md text-[15px] leading-relaxed text-ink-300 sm:text-base">
-                            Photos only tell half the story. Book a slot and a consultant will have the car charged, cleaned
-                            and ready for a test drive on Gulshan Avenue.
+                            Photos only tell half the story. Book a slot and a consultant will have
+                            the car charged, cleaned and ready for a test drive on Gulshan Avenue.
                         </p>
 
                         <ul className="mt-8 space-y-4 border-t border-white/10 pt-6">
                             {showrooms.map((s) => (
                                 <li key={s.id} className="flex gap-3 text-[14px]">
-                                    <Icon name="map-pin" size={18} className="mt-0.5 shrink-0 text-gold-400" />
+                                    <Icon
+                                        name="map-pin"
+                                        size={18}
+                                        className="mt-0.5 shrink-0 text-gold-400"
+                                    />
                                     <span>
                                         <span className="font-semibold text-white">{s.city}</span>
                                         <span className="text-ink-300"> — {s.address}</span>
@@ -72,7 +87,12 @@ export default function ShowroomExperience({ image, showrooms = [], hours = [] }
                             <Button href="/showroom#visit" size="lg" iconRight="arrow-right">
                                 Schedule Showroom Visit
                             </Button>
-                            <Button href={showrooms[0]?.mapUrl} variant="outline-light" size="lg" icon="map-pin">
+                            <Button
+                                href={showrooms[0]?.mapUrl}
+                                variant="outline-light"
+                                size="lg"
+                                icon="map-pin"
+                            >
                                 Get Directions
                             </Button>
                         </div>

@@ -33,7 +33,7 @@ export default function ShowroomHero({ slides = [] }) {
         <section
             aria-roledescription="carousel"
             aria-label="Featured imports"
-            className="relative -mt-[72px] flex min-h-[600px] flex-col overflow-hidden bg-ink-950 text-white h-[100svh] max-h-[840px]"
+            className="relative -mt-18 flex min-h-150 flex-col overflow-hidden bg-ink-950 text-white h-svh max-h-210"
         >
             {/* Slides */}
             <AnimatePresence initial={false}>
@@ -57,11 +57,11 @@ export default function ShowroomHero({ slides = [] }) {
             </AnimatePresence>
 
             {/* Legibility layers: left-weighted wash + bottom fade into the stats band */}
-            <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/55 to-ink-950/10" />
-            <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-ink-950 via-ink-950/70 to-transparent" />
-            <div aria-hidden="true" className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-ink-950/70 to-transparent" />
+            <div aria-hidden="true" className="absolute inset-0 bg-linear-to-r from-ink-950/90 via-ink-950/55 to-ink-950/10" />
+            <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-ink-950 via-ink-950/70 to-transparent" />
+            <div aria-hidden="true" className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-ink-950/70 to-transparent" />
 
-            <div className="container-page relative z-10 flex flex-1 flex-col justify-end pt-[120px] pb-36 md:pb-44">
+            <div className="container-page relative z-10 flex flex-1 flex-col justify-end pt-30 pb-36 md:pb-44">
                 <p className="eyebrow anim-fade-up mb-6 flex items-center gap-3 text-gold-300">
                     <span className="h-px w-10 bg-gold-400/60" aria-hidden="true" />
                     Japan · UK · UAE — Direct to Dhaka
@@ -99,7 +99,7 @@ export default function ShowroomHero({ slides = [] }) {
 
             {/* Slide meta + controls (desktop: bottom-right; mobile: compact) */}
             <div
-                className="absolute right-0 bottom-28 z-10 hidden w-[360px] pr-8 lg:block xl:pr-[max(2rem,calc((100vw-1320px)/2+2rem))]"
+                className="absolute right-0 bottom-28 z-10 hidden w-90 pr-8 lg:block xl:pr-[max(2rem,calc((100vw-1320px)/2+2rem))]"
                 onMouseEnter={() => setHoverPaused(true)}
                 onMouseLeave={() => setHoverPaused(false)}
                 onFocus={() => setHoverPaused(true)}
@@ -174,7 +174,7 @@ function SlideControls({ slides, index, paused, userPaused, onSelect, onEnd, onT
                         aria-current={i === index ? "true" : undefined}
                         className="group relative flex h-6 flex-1 cursor-pointer items-center"
                     >
-                        <span className="relative h-[2px] w-full overflow-hidden rounded-full bg-white/20 group-hover:bg-white/35">
+                        <span className="relative h-0.5 w-full overflow-hidden rounded-full bg-white/20 group-hover:bg-white/35">
                             {i < index && <span className="absolute inset-0 bg-white/70" />}
                             {i === index && (
                                 <span

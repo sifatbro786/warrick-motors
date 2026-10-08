@@ -36,9 +36,9 @@ export default function WhyWarrick({ points = [], image }) {
                 </Reveal>
 
                 <Reveal className="relative lg:col-span-4" delay={0.1}>
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] bg-ink-800">
+                    <div className="relative aspect-4/5 overflow-hidden rounded-card bg-ink-800">
                         <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 33vw, 100vw" className="object-cover" />
-                        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink-950/60 to-transparent" />
+                        <div aria-hidden="true" className="absolute inset-0 bg-linear-to-t from-ink-950/60 to-transparent" />
                         <p className="absolute bottom-5 left-5 flex items-center gap-2 text-[12.5px] font-medium text-white">
                             <Icon name="ship" size={16} className="text-gold-300" />
                             Yokohama → Chattogram, every fortnight

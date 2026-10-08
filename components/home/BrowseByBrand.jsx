@@ -26,7 +26,10 @@ export default function BrowseByBrand({ tiles = [], brands = [], counts = {} }) 
                     }
                     description="From everyday Toyota hybrids to flagship Lexus and AMG — every badge here is imported by us, not through a middleman."
                     action={
-                        <Link href="/cars" className="group inline-flex items-center gap-2 text-sm font-semibold text-ink-900">
+                        <Link
+                            href="/cars"
+                            className="group inline-flex items-center gap-2 text-sm font-semibold text-ink-900"
+                        >
                             All {brands.length} brands
                             <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line-strong transition-colors group-hover:border-ink-900 group-hover:bg-ink-900 group-hover:text-white">
                                 <Icon name="arrow-right" size={16} />
@@ -35,21 +38,27 @@ export default function BrowseByBrand({ tiles = [], brands = [], counts = {} }) 
                     }
                 />
 
-                <Stagger className="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4" stagger={0.09}>
+                <Stagger
+                    className="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4"
+                    stagger={0.09}
+                >
                     {tiles.map((t, i) => (
                         <StaggerItem key={t.brand} className={i % 2 ? "lg:mt-10" : ""}>
                             <Link
                                 href={`/cars?brand=${encodeURIComponent(t.brand)}`}
-                                className="group relative block aspect-[3/4] overflow-hidden rounded-[var(--radius-card)] bg-ink-800"
+                                className="group relative block aspect-3/4 overflow-hidden rounded-card bg-ink-800"
                             >
                                 <Image
                                     src={t.image}
                                     alt={t.alt}
                                     fill
                                     sizes="(min-width: 1024px) 25vw, 50vw"
-                                    className="object-cover transition-transform duration-[1.4s] ease-[var(--ease-out-expo)] group-hover:scale-[1.07]"
+                                    className="object-cover transition-transform duration-[1.4s] ease-out-expo group-hover:scale-[1.07]"
                                 />
-                                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-ink-950/75 via-ink-950/10 to-ink-950/70" />
+                                <div
+                                    aria-hidden="true"
+                                    className="absolute inset-0 bg-linear-to-b from-ink-950/75 via-ink-950/10 to-ink-950/70"
+                                />
                                 <div className="absolute inset-x-0 top-0 p-4 sm:p-6">
                                     <h3 className="font-display text-xl leading-tight font-semibold tracking-tight text-white sm:text-3xl">
                                         {t.brand}
@@ -73,8 +82,11 @@ export default function BrowseByBrand({ tiles = [], brands = [], counts = {} }) 
             </div>
 
             {/* Brand rail — badge + name, never pauses (client request) */}
-            <div className="relative mt-16 border-y border-line bg-paper-warm/40 py-7 md:mt-20 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-                <ul className="flex w-max animate-marquee items-center gap-14" aria-label="Brands we import">
+            <div className="relative mt-16 border-y border-line bg-paper-warm/40 py-7 md:mt-20 mask-[linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+                <ul
+                    className="flex w-max animate-marquee items-center gap-14"
+                    aria-label="Brands we import"
+                >
                     {rail.map((b, i) => {
                         const clone = i >= brands.length;
                         return (
@@ -84,13 +96,18 @@ export default function BrowseByBrand({ tiles = [], brands = [], counts = {} }) 
                                     tabIndex={clone ? -1 : undefined}
                                     className="group flex items-center gap-3.5"
                                 >
-                                    <BrandMark brand={b} size={52} className="group-hover:border-gold-500" />
+                                    <BrandMark
+                                        brand={b}
+                                        size={52}
+                                        className="group-hover:border-gold-500"
+                                    />
                                     <span className="flex flex-col leading-tight">
                                         <span className="font-display text-[15px] font-bold tracking-[-0.01em] whitespace-nowrap text-ink-700 uppercase transition-colors group-hover:text-ink-900">
                                             {b.name}
                                         </span>
                                         <span className="text-[11.5px] whitespace-nowrap text-ink-500">
-                                            {b.origin} · {String(counts[b.name] || 0).padStart(2, "0")} in stock
+                                            {b.origin} ·{" "}
+                                            {String(counts[b.name] || 0).padStart(2, "0")} in stock
                                         </span>
                                     </span>
                                 </Link>

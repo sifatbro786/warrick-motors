@@ -26,8 +26,10 @@ docs/                   status + architecture
 4. Car URLs use `slug`; `getCarById()` also resolves `id` and `stockNo`, so admin links keep working.
 5. Filters live in the URL (`?brand=Toyota&budget=30-60`) and are parsed by `parseCarFilters` —
    the same function validates a future `GET /api/cars` request.
-6. Forms (Phase 4) post to Server Actions in `lib/actions/` that return `{ ok, message, fieldErrors }`.
-   Today they validate + log; later they call Nodemailer / insert a `Lead` document — the UI doesn't change.
+6. Forms post to Server Actions in `lib/actions/` (`visit.actions.js`, `lead.actions.js`) that return
+   `{ ok, message, fieldErrors?, reference? }`. Validation lives in `lib/validation/lead.js`. Today they validate + log;
+   later they insert a `Lead` document and send mail via Nodemailer — the form UI doesn't change.
+   Build new forms from `components/forms/fields.jsx`.
 7. Images: `car.images[] = { src, alt }`. `src` can be remote or a local `/uploads/...` path from the admin uploader;
    `CarImage` shows a branded fallback if a file is missing.
 
@@ -46,4 +48,6 @@ docs/                   status + architecture
 ## Performance rules
 - Server components by default; client components only for interaction. Pass server-rendered children into client wrappers (e.g. `StatusTabs` panels).
 - Animations: `m.*` from framer-motion under `LazyMotion`; above-the-fold entrance animations in CSS.
-- Images: always `next/image` with `sizes`; only the first hero slide gets `preload`.
+- Images: always `components/ui/SmartImage` (wraps next/image) with `sizes`; stock photos are resized by their CDN
+  (`lib/utils/image-loader.js`), local uploads by Next's optimizer. Only the first hero slide gets `preload`.
+- Third-party embeds (Google Maps) are click-to-load facades (`MapEmbed`).
