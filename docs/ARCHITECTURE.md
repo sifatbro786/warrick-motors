@@ -19,6 +19,7 @@ docs/                   status + architecture
 ```
 
 ## Rules that keep the backend migration cheap
+
 1. **Components never import `lib/data/*`.** Only `lib/services/*` does.
 2. Service functions are `async` and return **plain serialisable objects** (Mongo: use `.lean()` and map `_id → id`).
 3. Every cached read uses `cacheTag("cars")`. Admin create/update/delete → `revalidateTag("cars")`
@@ -34,18 +35,21 @@ docs/                   status + architecture
    `CarImage` shows a branded fallback if a file is missing.
 
 ## Mongo switch checklist (future)
+
 - [ ] `lib/db/mongoose.js` (cached connection) + `models/Car.js` using enums from `lib/constants/inventory.js`
 - [ ] Replace `source()` and filtering in `car.service.js` with `Car.find(query).sort(sort).skip().limit().lean()`
 - [ ] Add `MONGODB_URI`, `SMTP_*` to `.env.local`
 - [ ] Admin routes under `app/(admin)/admin/*` with auth (proxy.js) — public components untouched
 
 ## SEO control (dashboard-ready)
+
 - Every page: `export const generateMetadata = () => buildMetadata({ key: "<pageKey>", path: "/<route>" })`.
 - Meta strings live only in `lib/data/seo.js` → future `SeoSettings` + `PageSeo` collections; cars get optional `car.seo { title, description, keywords }`.
 - Admin "Save SEO" action → write Mongo → `revalidateTag("seo")` (and `"cars"` for car SEO).
 - Structured data builders in `lib/seo/jsonld.js`; render with `<JsonLd data={...} />` (escapes `<`).
 
 ## Performance rules
+
 - Server components by default; client components only for interaction. Pass server-rendered children into client wrappers (e.g. `StatusTabs` panels).
 - Animations: `m.*` from framer-motion under `LazyMotion`; above-the-fold entrance animations in CSS.
 - Images: always `components/ui/SmartImage` (wraps next/image) with `sizes`; stock photos are resized by their CDN

@@ -32,7 +32,7 @@ export default function ShowroomHero({ slides = [] }) {
         <section
             aria-roledescription="carousel"
             aria-label="Featured imports"
-            className="relative -mt-18 flex min-h-150 flex-col overflow-hidden bg-ink-950 text-white h-svh max-h-210"
+            className="relative -mt-18 flex min-h-[clamp(600px,100svh,840px)] flex-col overflow-hidden bg-ink-950 text-white"
         >
             {/* Slides */}
             <AnimatePresence initial={false}>

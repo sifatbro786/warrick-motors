@@ -215,3 +215,16 @@ Notes for Phase 5:
 Verified: build + lint; hero advances; mobile menu opens/closes; sidebar, founder, brand rail, 404 screenshots.
 
 Before launch: see the checklist in `docs/BACKEND_HANDOFF.md` §6.
+
+### Post-Phase 5 fixes + Vercel (2026-10-08) ✅
+
+- Hero height is now `min-h-[clamp(600px,100svh,840px)]` (was a fixed `h-svh`): on short desktop windows the hero grows
+  instead of pushing the CTAs under the quick-search card.
+- About founder quote: the quote icon sits on its own line (no longer overlaps the first letter).
+- **Deploy (Vercel now, VPS later)**:
+    - `vercel.json` only pins framework + region `bom1` (Mumbai, closest to Bangladesh).
+    - Security headers + `/public` cache headers live in `next.config.mjs → headers()` so they apply identically on a VPS.
+    - `siteConfig.url` falls back to `VERCEL_PROJECT_PRODUCTION_URL` when `NEXT_PUBLIC_SITE_URL` is unset;
+      `robots.js` disallows everything on Vercel preview deployments.
+    - Set `NEXT_PUBLIC_SITE_URL` in Vercel → Settings → Environment Variables (Production) once the domain is live.
+    - VPS later: `npm ci && npm run build && npm start` behind Nginx (or PM2); `vercel.json` is simply ignored there.

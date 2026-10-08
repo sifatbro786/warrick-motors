@@ -134,14 +134,15 @@ export default async function AboutPage() {
                                 <span aria-hidden="true" className="h-px w-8 bg-gold-500/50" />A
                                 note from the founder
                             </p>
-                            <blockquote className="relative">
+                            <blockquote>
+                                {/* sits on its own line above the quote so it never collides with the first letter */}
                                 <Icon
                                     name="quote"
-                                    size={56}
+                                    size={44}
                                     strokeWidth={0}
-                                    className="absolute -top-6 -left-2 fill-gold-300/60 text-gold-300/60"
+                                    className="mb-3 block fill-gold-500/50 text-gold-500/50"
                                 />
-                                <p className="relative font-display text-[1.6rem] leading-[1.3] font-semibold tracking-[-0.02em] text-ink-900 sm:text-[2rem]">
+                                <p className="font-display text-[1.6rem] leading-[1.3] font-semibold tracking-[-0.02em] text-ink-900 sm:text-[2rem]">
                                     {story.founder.quote}
                                 </p>
                             </blockquote>
