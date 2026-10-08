@@ -18,7 +18,11 @@ export default function StockStatusSection({ byStatus = {} }) {
                 <>
                     <div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 no-scrollbar sm:mx-0 sm:grid sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 sm:grid-cols-2 xl:grid-cols-4">
                         {items.map((car) => (
-                            <CarCard key={car.id} car={car} className="w-[84%] shrink-0 snap-start sm:w-auto" />
+                            <CarCard
+                                key={car.id}
+                                car={car}
+                                className="w-[84%] shrink-0 snap-start sm:w-auto"
+                            />
                         ))}
                     </div>
                     <Link
@@ -26,7 +30,11 @@ export default function StockStatusSection({ byStatus = {} }) {
                         className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-gold-300 hover:text-gold-200"
                     >
                         See all {total} — {meta.short}
-                        <Icon name="arrow-right" size={16} className="transition-transform group-hover:translate-x-1" />
+                        <Icon
+                            name="arrow-right"
+                            size={16}
+                            className="transition-transform group-hover:translate-x-1"
+                        />
                     </Link>
                 </>
             ),
@@ -36,12 +44,12 @@ export default function StockStatusSection({ byStatus = {} }) {
     return (
         <section className="relative overflow-hidden bg-ink-900 py-20 text-white md:py-28">
             {/* Faint oversized wordmark — texture, not decoration noise */}
-            <p
+            {/* Oversized watermark drawn via CSS content — decorative, not in the accessibility tree */}
+            <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -top-6 right-[-2%] font-display text-[18vw] leading-none font-extrabold tracking-[-0.06em] whitespace-nowrap text-white/[0.025] select-none"
-            >
-                IN STOCK
-            </p>
+                data-text="IN STOCK"
+                className="pointer-events-none absolute -top-6 right-[-2%] font-display text-[18vw] leading-none font-extrabold tracking-[-0.06em] whitespace-nowrap text-white/2.5 select-none before:content-[attr(data-text)]"
+            />
             <div className="container-page relative">
                 <SectionHeading
                     index="03"

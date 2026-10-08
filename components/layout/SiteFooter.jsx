@@ -6,7 +6,10 @@ import { siteConfig, telHref } from "@/lib/config/site";
 import { STOCK_STATUS_META } from "@/lib/constants/inventory";
 
 const INVENTORY_LINKS = [
-    ...Object.values(STOCK_STATUS_META).map((m) => ({ label: m.short, href: `/cars?status=${m.key}` })),
+    ...Object.values(STOCK_STATUS_META).map((m) => ({
+        label: m.short,
+        href: `/cars?status=${m.key}`,
+    })),
     { label: "Hybrid Cars", href: "/cars?fuel=Hybrid" },
     { label: "SUVs", href: "/cars?body=SUV" },
 ];
@@ -22,14 +25,17 @@ export default function SiteFooter() {
     return (
         <footer className="relative mt-auto bg-ink-900 text-ink-300">
             {/* Gold hairline — the only ornament */}
-            <div aria-hidden="true" className="h-px bg-gradient-to-r from-transparent via-gold-500/60 to-transparent" />
+            <div
+                aria-hidden="true"
+                className="h-px bg-linear-to-r from-transparent via-gold-500/60 to-transparent"
+            />
 
             <div className="container-page grid gap-12 py-16 md:grid-cols-12 md:py-20">
                 <div className="md:col-span-4">
                     <Logo tone="light" />
                     <p className="mt-6 max-w-sm text-[15px] leading-relaxed text-ink-300">
-                        Direct importers of reconditioned and brand-new cars from Japan, the UK and the UAE —
-                        auction sheet verified, documents in your hand.
+                        Direct importers of reconditioned and brand-new cars from Japan, the UK and
+                        the UAE — auction sheet verified, documents in your hand.
                     </p>
                     <ul className="mt-8 flex gap-2">
                         {siteConfig.social.map((s) => (
@@ -72,25 +78,65 @@ export default function SiteFooter() {
                         ))}
                     </ul>
                     <div className="mt-6 space-y-1.5 border-t border-white/10 pt-5 text-[14.5px]">
-                        <a href={telHref(siteConfig.contact.hotline)} className="nums flex items-center gap-2 text-white hover:text-gold-200">
-                            <Icon name="phone" size={16} className="text-gold-400" /> {siteConfig.contact.hotlineDisplay}
+                        <a
+                            href={telHref(siteConfig.contact.hotline)}
+                            className="nums flex items-center gap-2 text-white hover:text-gold-200"
+                        >
+                            <Icon name="phone" size={16} className="text-gold-400" />{" "}
+                            {siteConfig.contact.hotlineDisplay}
                         </a>
-                        <a href={telHref(siteConfig.contact.sales)} className="nums flex items-center gap-2 hover:text-white">
-                            <Icon name="phone" size={16} className="text-gold-400" /> {siteConfig.contact.salesDisplay}
+                        <a
+                            href={telHref(siteConfig.contact.sales)}
+                            className="nums flex items-center gap-2 hover:text-white"
+                        >
+                            <Icon name="phone" size={16} className="text-gold-400" />{" "}
+                            {siteConfig.contact.salesDisplay}
                         </a>
-                        <a href={`mailto:${siteConfig.contact.email}`} className="flex items-center gap-2 hover:text-white">
-                            <Icon name="mail" size={16} className="text-gold-400" /> {siteConfig.contact.email}
+                        <a
+                            href={`mailto:${siteConfig.contact.email}`}
+                            className="flex items-center gap-2 hover:text-white"
+                        >
+                            <Icon name="mail" size={16} className="text-gold-400" />{" "}
+                            {siteConfig.contact.email}
                         </a>
+                        <ul className="pt-2 text-[13.5px]">
+                            {siteConfig.hours.map((h) => (
+                                <li key={h.days} className="flex items-center gap-2">
+                                    <Icon name="clock" size={16} className="text-gold-400" />
+                                    {h.days}: <span className="text-white">{h.time}</span>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
             </div>
 
             <div className="border-t border-white/8">
-                <div className="container-page flex flex-col gap-3 py-6 text-[13px] text-ink-400 sm:flex-row sm:items-center sm:justify-between">
+                <div className="container-page flex flex-col gap-4 py-6 text-[13px] text-ink-400 md:flex-row md:items-center md:justify-between">
                     <p>
-                        © <CopyrightYear /> {siteConfig.legalName}. All rights reserved.
+                        © <CopyrightYear /> {siteConfig.legalName.replace(/\.$/, "")}. All rights
+                        reserved.
                     </p>
-                    <p>{siteConfig.hours.map((h) => `${h.days}: ${h.time}`).join("  ·  ")}</p>
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                        <Link href="/terms" className="transition-colors hover:text-white">
+                            Terms &amp; Conditions
+                        </Link>
+                        <Link href="/privacy" className="transition-colors hover:text-white">
+                            Privacy Policy
+                        </Link>
+                        <span aria-hidden="true" className="hidden h-3 w-px bg-white/15 sm:block" />
+                        <p>
+                            Developed by{" "}
+                            <a
+                                href={siteConfig.developer.url}
+                                target="_blank"
+                                rel="noopener"
+                                className="font-medium text-gold-300 underline-offset-4 transition-colors hover:text-gold-200 hover:underline"
+                            >
+                                {siteConfig.developer.name}
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </footer>

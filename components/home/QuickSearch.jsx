@@ -2,35 +2,42 @@
 
 import { useState } from "react";
 import Form from "next/form";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Icon from "@/components/ui/Icon";
 import { BUDGET_RANGES, STOCK_STATUS_META } from "@/lib/constants/inventory";
-import { EASE } from "@/components/motion/Reveal";
 import { cn } from "@/lib/utils/format";
 
 const TABS = [
     { key: "", label: "All Stock" },
-    ...Object.entries(STOCK_STATUS_META).map(([status, m]) => ({ key: m.key, label: m.short, status })),
+    ...Object.entries(STOCK_STATUS_META).map(([status, m]) => ({
+        key: m.key,
+        label: m.short,
+        status,
+    })),
 ];
 
 /**
  * Hero search. A plain GET <Form action="/cars"> → works without JS, and with
  * JS Next does a client-side navigation. Query keys match parseCarFilters().
  */
-export default function QuickSearch({ brands = [], modelsByBrand = {}, statusCounts = {}, total = 0 }) {
+export default function QuickSearch({
+    brands = [],
+    modelsByBrand = {},
+    statusCounts = {},
+    total = 0,
+}) {
     const [status, setStatus] = useState("");
     const [brand, setBrand] = useState("");
     const models = brand ? modelsByBrand[brand] || [] : [];
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: EASE, delay: 0.8 }}
-            className="relative"
-        >
+        <div className="anim-fade-up relative" style={{ animationDelay: "700ms" }}>
             {/* Status tabs — sit on the card's top edge (rRw reference) */}
-            <div role="group" aria-label="Filter by stock status" className="no-scrollbar flex overflow-x-auto">
+            <div
+                role="group"
+                aria-label="Filter by stock status"
+                className="no-scrollbar flex overflow-x-auto"
+            >
                 {TABS.map((t) => {
                     const active = status === t.key;
                     const count = t.status ? statusCounts[t.status] : total;
@@ -46,7 +53,7 @@ export default function QuickSearch({ brands = [], modelsByBrand = {}, statusCou
                             )}
                         >
                             {active && (
-                                <motion.span
+                                <m.span
                                     layoutId="qs-tab"
                                     className="absolute inset-0 rounded-t-xl bg-white"
                                     transition={{ type: "spring", stiffness: 420, damping: 36 }}
@@ -54,7 +61,14 @@ export default function QuickSearch({ brands = [], modelsByBrand = {}, statusCou
                             )}
                             <span className="relative">
                                 {t.label}
-                                <span className={cn("nums ml-1.5 text-[11px]", active ? "text-gold-600" : "text-white/45")}>{count}</span>
+                                <span
+                                    className={cn(
+                                        "nums ml-1.5 text-[11px]",
+                                        active ? "text-gold-600" : "text-white/45",
+                                    )}
+                                >
+                                    {count}
+                                </span>
                             </span>
                         </button>
                     );
@@ -94,7 +108,9 @@ export default function QuickSearch({ brands = [], modelsByBrand = {}, statusCou
                         disabled={!brand}
                         className="w-full cursor-pointer appearance-none bg-transparent text-[15px] font-medium text-ink-900 outline-none disabled:cursor-not-allowed disabled:text-ink-400"
                     >
-                        <option value="">{brand ? `Any ${brand} model` : "Select a brand first"}</option>
+                        <option value="">
+                            {brand ? `Any ${brand} model` : "Select a brand first"}
+                        </option>
                         {models.map((m) => (
                             <option key={m} value={m}>
                                 {m}
@@ -128,20 +144,24 @@ export default function QuickSearch({ brands = [], modelsByBrand = {}, statusCou
                     </button>
                 </div>
             </Form>
-        </motion.div>
+        </div>
     );
 }
 
 function Field({ label, icon, children }) {
     return (
         <label className="relative flex cursor-pointer flex-col justify-center gap-1 border-b border-line px-6 py-4 focus-within:bg-paper/60 md:border-r md:border-b-0">
-            <span className="flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.14em] text-ink-400 uppercase">
+            <span className="flex items-center gap-1.5 text-[11px] font-semibold tracking-[0.14em] text-ink-500 uppercase">
                 <Icon name={icon} size={14} className="text-gold-500" />
                 {label}
             </span>
             <span className="relative flex items-center">
                 {children}
-                <Icon name="chevron-down" size={16} className="pointer-events-none absolute right-0 text-ink-400" />
+                <Icon
+                    name="chevron-down"
+                    size={16}
+                    className="pointer-events-none absolute right-0 text-ink-400"
+                />
             </span>
         </label>
     );

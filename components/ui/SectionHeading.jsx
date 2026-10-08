@@ -39,7 +39,15 @@ export default function SectionHeading({
                         )}
                     >
                         {index && <span className="nums">{index}</span>}
-                        {index && <span aria-hidden="true" className={cn("h-px w-8", dark ? "bg-gold-300/50" : "bg-gold-500/50")} />}
+                        {index && (
+                            <span
+                                aria-hidden="true"
+                                className={cn(
+                                    "h-px w-8",
+                                    dark ? "bg-gold-300/50" : "bg-gold-500/50",
+                                )}
+                            />
+                        )}
                         {eyebrow}
                     </p>
                 )}
@@ -52,7 +60,12 @@ export default function SectionHeading({
                     {title}
                 </Tag>
                 {description && (
-                    <p className={cn("mt-4 text-[15px] leading-relaxed sm:text-base", dark ? "text-ink-300" : "text-ink-500")}>
+                    <p
+                        className={cn(
+                            "mt-4 text-[15px] leading-relaxed sm:text-base",
+                            dark ? "text-ink-300" : "text-ink-500",
+                        )}
+                    >
                         {description}
                     </p>
                 )}

@@ -23,22 +23,36 @@ export default function WhyWarrick({ points = [], image }) {
                         Imported <Accent>properly.</Accent> Paperwork included.
                     </h2>
                     <p className="mt-5 text-[15px] leading-relaxed text-ink-500 sm:text-base">
-                        Buying an imported car in Bangladesh shouldn&apos;t mean guessing about mileage, chasing BRTA
-                        or arranging a loan yourself. We do the parts most dealers leave to you.
+                        Buying an imported car in Bangladesh shouldn&apos;t mean guessing about
+                        mileage, chasing BRTA or arranging a loan yourself. We do the parts most
+                        dealers leave to you.
                     </p>
                     <Link
                         href="/about"
                         className="group mt-8 inline-flex items-center gap-2 border-b border-gold-500 pb-1 text-sm font-semibold text-ink-900"
                     >
                         How our import process works
-                        <Icon name="arrow-right" size={16} className="transition-transform group-hover:translate-x-1" />
+                        <Icon
+                            name="arrow-right"
+                            size={16}
+                            className="transition-transform group-hover:translate-x-1"
+                        />
                     </Link>
                 </Reveal>
 
                 <Reveal className="relative lg:col-span-4" delay={0.1}>
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] bg-ink-800">
-                        <Image src={image.src} alt={image.alt} fill sizes="(min-width: 1024px) 33vw, 100vw" className="object-cover" />
-                        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink-950/60 to-transparent" />
+                    <div className="relative aspect-4/5 overflow-hidden rounded-card bg-ink-800">
+                        <Image
+                            src={image.src}
+                            alt={image.alt}
+                            fill
+                            sizes="(min-width: 1024px) 33vw, 100vw"
+                            className="object-cover"
+                        />
+                        <div
+                            aria-hidden="true"
+                            className="absolute inset-0 bg-linear-to-t from-ink-950/60 to-transparent"
+                        />
                         <p className="absolute bottom-5 left-5 flex items-center gap-2 text-[12.5px] font-medium text-white">
                             <Icon name="ship" size={16} className="text-gold-300" />
                             Yokohama → Chattogram, every fortnight
@@ -49,7 +63,11 @@ export default function WhyWarrick({ points = [], image }) {
 
                 <Stagger as="ol" className="divide-y divide-line lg:col-span-4" stagger={0.1}>
                     {points.map((p, i) => (
-                        <StaggerItem as="li" key={p.title} className="flex gap-5 py-6 first:pt-0 last:pb-0">
+                        <StaggerItem
+                            as="li"
+                            key={p.title}
+                            className="flex gap-5 py-6 first:pt-0 last:pb-0"
+                        >
                             <span className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-line-strong bg-white text-ink-900">
                                 <Icon name={p.icon} size={21} />
                                 <span className="nums absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-ink-900 text-[10px] font-semibold text-gold-300">
@@ -57,8 +75,12 @@ export default function WhyWarrick({ points = [], image }) {
                                 </span>
                             </span>
                             <div>
-                                <h3 className="font-display text-[1.05rem] font-semibold tracking-tight">{p.title}</h3>
-                                <p className="mt-1.5 text-[14px] leading-relaxed text-ink-500">{p.body}</p>
+                                <h3 className="font-display text-[1.05rem] font-semibold tracking-tight">
+                                    {p.title}
+                                </h3>
+                                <p className="mt-1.5 text-[14px] leading-relaxed text-ink-500">
+                                    {p.body}
+                                </p>
                             </div>
                         </StaggerItem>
                     ))}

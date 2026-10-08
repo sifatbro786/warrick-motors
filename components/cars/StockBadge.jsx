@@ -23,12 +23,17 @@ export default function StockBadge({ status, location, className, size = "md" })
         >
             <span aria-hidden="true" className="relative flex h-1.5 w-1.5">
                 {meta.tone === "ready" && (
-                    <span className={cn("absolute inline-flex h-full w-full animate-ping rounded-full opacity-60", tone.dot)} />
+                    <span
+                        className={cn(
+                            "absolute inline-flex h-full w-full animate-ping rounded-full opacity-60",
+                            tone.dot,
+                        )}
+                    />
                 )}
                 <span className={cn("relative inline-flex h-1.5 w-1.5 rounded-full", tone.dot)} />
             </span>
             {meta.short}
-            {location && meta.tone === "ready" && <span className="font-medium opacity-75">· {location}</span>}
+            {location && meta.tone === "ready" && <span className="font-medium">· {location}</span>}
         </span>
     );
 }

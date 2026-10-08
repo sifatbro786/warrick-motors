@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import Icon from "@/components/ui/Icon";
 import CarImage from "@/components/cars/CarImage";
 import { EASE } from "@/components/motion/Reveal";
@@ -40,7 +40,7 @@ export default function CarGallery({ images = [], title, badge }) {
 
     if (!count) {
         return (
-            <div className="relative aspect-[16/10] overflow-hidden rounded-[var(--radius-card)]">
+            <div className="relative aspect-16/10 overflow-hidden rounded-card">
                 <CarImage src={null} alt={title} />
             </div>
         );
@@ -51,7 +51,7 @@ export default function CarGallery({ images = [], title, badge }) {
     return (
         <div>
             <div
-                className="group relative aspect-[16/10] overflow-hidden rounded-[var(--radius-card)] bg-ink-800"
+                className="group relative aspect-16/10 overflow-hidden rounded-card bg-ink-800"
                 role="group"
                 aria-roledescription="carousel"
                 aria-label={`${title} photos`}
@@ -62,7 +62,7 @@ export default function CarGallery({ images = [], title, badge }) {
                 }}
             >
                 <AnimatePresence initial={false} custom={dir} mode="popLayout">
-                    <motion.div
+                    <m.div
                         key={index}
                         custom={dir}
                         className="absolute inset-0 cursor-grab active:cursor-grabbing"
@@ -90,10 +90,13 @@ export default function CarGallery({ images = [], title, badge }) {
                             preload={index === 0}
                             draggable={false}
                         />
-                    </motion.div>
+                    </m.div>
                 </AnimatePresence>
 
-                <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-ink-950/50 to-transparent" />
+                <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-ink-950/50 to-transparent"
+                />
                 {badge && <div className="absolute top-4 left-4 z-10">{badge}</div>}
 
                 <button
@@ -129,11 +132,20 @@ export default function CarGallery({ images = [], title, badge }) {
                                 aria-label={`Show photo ${i + 1}`}
                                 aria-current={i === index ? "true" : undefined}
                                 className={cn(
-                                    "relative block h-[72px] w-[108px] cursor-pointer overflow-hidden rounded-lg bg-ink-800 transition-[opacity,box-shadow] sm:h-20 sm:w-[124px]",
-                                    i === index ? "ring-2 ring-crimson-600 ring-offset-2 ring-offset-paper" : "opacity-60 hover:opacity-100",
+                                    "relative block h-18 w-27 cursor-pointer overflow-hidden rounded-lg bg-ink-800 transition-[opacity,box-shadow] sm:h-20 sm:w-31",
+                                    i === index
+                                        ? "ring-2 ring-crimson-600 ring-offset-2 ring-offset-paper"
+                                        : "opacity-60 hover:opacity-100",
                                 )}
                             >
-                                <Image src={img.src} alt="" fill sizes="124px" quality={60} className="object-cover" />
+                                <Image
+                                    src={img.src}
+                                    alt=""
+                                    fill
+                                    sizes="124px"
+                                    quality={60}
+                                    className="object-cover"
+                                />
                             </button>
                         </li>
                     ))}
@@ -142,18 +154,21 @@ export default function CarGallery({ images = [], title, badge }) {
 
             <AnimatePresence>
                 {lightbox && (
-                    <motion.div
+                    <m.div
                         role="dialog"
                         aria-modal="true"
                         aria-label={`${title} — fullscreen photos`}
-                        className="fixed inset-0 z-[80] flex flex-col bg-ink-950/96"
+                        className="fixed inset-0 z-80 flex flex-col bg-ink-950/96"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                     >
                         <div className="flex items-center justify-between px-4 py-4 text-white sm:px-8">
                             <p className="text-sm font-medium">
-                                {title} <span className="nums ml-2 text-ink-400">{index + 1} / {count}</span>
+                                {title}{" "}
+                                <span className="nums ml-2 text-ink-400">
+                                    {index + 1} / {count}
+                                </span>
                             </p>
                             <button
                                 type="button"
@@ -167,7 +182,7 @@ export default function CarGallery({ images = [], title, badge }) {
                         </div>
                         <div className="relative flex-1">
                             <AnimatePresence initial={false} mode="popLayout">
-                                <motion.div
+                                <m.div
                                     key={index}
                                     className="absolute inset-0"
                                     initial={{ opacity: 0, scale: 0.98 }}
@@ -175,8 +190,15 @@ export default function CarGallery({ images = [], title, badge }) {
                                     exit={{ opacity: 0 }}
                                     transition={{ duration: 0.45, ease: EASE }}
                                 >
-                                    <Image src={current.src} alt={current.alt || title} fill sizes="100vw" quality={85} className="object-contain" />
-                                </motion.div>
+                                    <Image
+                                        src={current.src}
+                                        alt={current.alt || title}
+                                        fill
+                                        sizes="100vw"
+                                        quality={85}
+                                        className="object-contain"
+                                    />
+                                </m.div>
                             </AnimatePresence>
                             {count > 1 && (
                                 <>
@@ -185,8 +207,10 @@ export default function CarGallery({ images = [], title, badge }) {
                                 </>
                             )}
                         </div>
-                        <p className="px-4 py-4 text-center text-[13px] text-ink-400">{current.alt}</p>
-                    </motion.div>
+                        <p className="px-4 py-4 text-center text-[13px] text-ink-400">
+                            {current.alt}
+                        </p>
+                    </m.div>
                 )}
             </AnimatePresence>
         </div>
@@ -202,7 +226,8 @@ function NavButton({ side, onClick, always = false }) {
             className={cn(
                 "absolute top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/90 text-ink-900 shadow-md transition-[opacity,background-color] hover:bg-white",
                 side === "left" ? "left-4" : "right-4",
-                !always && "opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-visible:opacity-100",
+                !always &&
+                    "opacity-100 md:opacity-0 md:group-hover:opacity-100 md:focus-visible:opacity-100",
             )}
         >
             <Icon name={side === "left" ? "chevron-left" : "chevron-right"} size={20} />

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 export const EASE = [0.22, 1, 0.36, 1];
 
@@ -8,8 +8,16 @@ export const EASE = [0.22, 1, 0.36, 1];
  * Scroll-reveal wrappers. Server components pass children through, so only the
  * wrapper ships JS — the content stays server-rendered.
  */
-export function Reveal({ children, as = "div", delay = 0, y = 28, className, once = true, amount = 0.2 }) {
-    const Tag = motion[as];
+export function Reveal({
+    children,
+    as = "div",
+    delay = 0,
+    y = 28,
+    className,
+    once = true,
+    amount = 0.2,
+}) {
+    const Tag = m[as];
     return (
         <Tag
             className={className}
@@ -35,7 +43,7 @@ const itemVariants = {
 
 /** Parent that staggers its <StaggerItem> children into view. */
 export function Stagger({ children, as = "div", stagger = 0.08, className, amount = 0.15 }) {
-    const Tag = motion[as];
+    const Tag = m[as];
     return (
         <Tag
             className={className}
@@ -51,7 +59,7 @@ export function Stagger({ children, as = "div", stagger = 0.08, className, amoun
 }
 
 export function StaggerItem({ children, as = "div", className }) {
-    const Tag = motion[as];
+    const Tag = m[as];
     return (
         <Tag className={className} variants={itemVariants}>
             {children}

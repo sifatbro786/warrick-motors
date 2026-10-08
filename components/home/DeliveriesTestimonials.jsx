@@ -49,21 +49,40 @@ export default function DeliveriesTestimonials({ deliveries = [], testimonials =
                         <StaggerItem
                             as="figure"
                             key={t.id}
-                            className="relative flex flex-col rounded-[var(--radius-card)] border border-line bg-white p-7 shadow-card"
+                            className="relative flex flex-col rounded-card border border-line bg-white p-7 shadow-card"
                         >
-                            <Icon name="quote" size={44} strokeWidth={0} className="absolute top-5 right-5 fill-gold-200 text-gold-200" />
-                            <div className="flex gap-0.5 text-gold-500" aria-label={`${t.rating} out of 5 stars`} role="img">
+                            <Icon
+                                name="quote"
+                                size={44}
+                                strokeWidth={0}
+                                className="absolute top-5 right-5 fill-gold-200 text-gold-200"
+                            />
+                            <div
+                                className="flex gap-0.5 text-gold-500"
+                                aria-label={`${t.rating} out of 5 stars`}
+                                role="img"
+                            >
                                 {Array.from({ length: t.rating }).map((_, i) => (
-                                    <Icon key={i} name="star" size={15} strokeWidth={0} className="fill-current" />
+                                    <Icon
+                                        key={i}
+                                        name="star"
+                                        size={15}
+                                        strokeWidth={0}
+                                        className="fill-current"
+                                    />
                                 ))}
                             </div>
-                            <blockquote className="mt-5 flex-1 text-[15px] leading-relaxed text-ink-700">“{t.quote}”</blockquote>
+                            <blockquote className="mt-5 flex-1 text-[15px] leading-relaxed text-ink-700">
+                                “{t.quote}”
+                            </blockquote>
                             <figcaption className="mt-7 flex items-center gap-3 border-t border-dashed border-line pt-5">
                                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-ink-900 font-display text-sm font-semibold text-gold-300">
                                     {initials(t.name)}
                                 </span>
                                 <span className="min-w-0">
-                                    <span className="block text-[14.5px] font-semibold text-ink-900">{t.name}</span>
+                                    <span className="block text-[14.5px] font-semibold text-ink-900">
+                                        {t.name}
+                                    </span>
                                     <span className="block truncate text-[12.5px] text-ink-500">
                                         {t.role} · <span className="text-ink-700">{t.car}</span>
                                     </span>

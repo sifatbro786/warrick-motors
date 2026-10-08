@@ -7,8 +7,15 @@ import { cn } from "@/lib/utils/format";
 export default function Logo({ tone = "dark", className, priority = false }) {
     const light = tone === "light";
     return (
-        <Link href="/" aria-label="Warrick Motors — home" className={cn("group inline-flex items-center gap-2.5", className)}>
-            <Image src={logo} alt="" width={40} height={40} className="h-9 w-9 object-contain" preload={priority} />
+        <Link href="/" className={cn("group inline-flex items-center gap-2.5", className)}>
+            <Image
+                src={logo}
+                alt=""
+                width={40}
+                height={40}
+                className="h-9 w-9 object-contain"
+                preload={priority}
+            />
             <span className="flex flex-col leading-none">
                 <span
                     className={cn(
@@ -18,9 +25,15 @@ export default function Logo({ tone = "dark", className, priority = false }) {
                 >
                     Warrick
                 </span>
-                <span className={cn("mt-1 text-[9.5px] font-semibold tracking-[0.42em] uppercase", light ? "text-gold-300" : "text-gold-600")}>
+                <span
+                    className={cn(
+                        "mt-1 text-[9.5px] font-semibold tracking-[0.42em] uppercase",
+                        light ? "text-gold-300" : "text-gold-600",
+                    )}
+                >
                     Motors
                 </span>
+                <span className="sr-only"> — home</span>
             </span>
         </Link>
     );

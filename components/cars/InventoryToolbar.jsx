@@ -2,7 +2,12 @@
 
 import Icon from "@/components/ui/Icon";
 import { useCarFilters } from "@/lib/hooks/useCarFilters";
-import { BUDGET_RANGES, SORT_OPTIONS, STOCK_STATUS_META, STATUS_BY_KEY } from "@/lib/constants/inventory";
+import {
+    BUDGET_RANGES,
+    SORT_OPTIONS,
+    STOCK_STATUS_META,
+    STATUS_BY_KEY,
+} from "@/lib/constants/inventory";
 import { cn } from "@/lib/utils/format";
 
 /** Result count, removable active-filter pills, and sort. */
@@ -10,14 +15,29 @@ export default function InventoryToolbar({ total, from, to }) {
     const { filters, update, toggleInList, pending } = useCarFilters();
 
     const pills = [
-        filters.statusKey && { label: STOCK_STATUS_META[STATUS_BY_KEY[filters.statusKey]]?.short, clear: () => update({ statusKey: null }) },
-        filters.budgetKey && { label: BUDGET_RANGES.find((b) => b.key === filters.budgetKey)?.label, clear: () => update({ budgetKey: null }) },
-        ...filters.brands.map((b) => ({ label: b, clear: () => update({ brands: filters.brands.filter((x) => x !== b), model: null }) })),
+        filters.statusKey && {
+            label: STOCK_STATUS_META[STATUS_BY_KEY[filters.statusKey]]?.short,
+            clear: () => update({ statusKey: null }),
+        },
+        filters.budgetKey && {
+            label: BUDGET_RANGES.find((b) => b.key === filters.budgetKey)?.label,
+            clear: () => update({ budgetKey: null }),
+        },
+        ...filters.brands.map((b) => ({
+            label: b,
+            clear: () => update({ brands: filters.brands.filter((x) => x !== b), model: null }),
+        })),
         filters.model && { label: filters.model, clear: () => update({ model: null }) },
         ...filters.bodyTypes.map((v) => ({ label: v, clear: () => toggleInList("bodyTypes", v) })),
         ...filters.fuelTypes.map((v) => ({ label: v, clear: () => toggleInList("fuelTypes", v) })),
-        filters.yearMin && { label: `From ${filters.yearMin}`, clear: () => update({ yearMin: null }) },
-        filters.yearMax && { label: `To ${filters.yearMax}`, clear: () => update({ yearMax: null }) },
+        filters.yearMin && {
+            label: `From ${filters.yearMin}`,
+            clear: () => update({ yearMin: null }),
+        },
+        filters.yearMax && {
+            label: `To ${filters.yearMax}`,
+            clear: () => update({ yearMax: null }),
+        },
         filters.q && { label: `“${filters.q}”`, clear: () => update({ q: null }) },
     ].filter(Boolean);
 
@@ -27,17 +47,21 @@ export default function InventoryToolbar({ total, from, to }) {
                 <p className="text-[14px] text-ink-500" aria-live="polite">
                     {total > 0 ? (
                         <>
-                            Showing <span className="nums font-semibold text-ink-900">{from}–{to}</span> of{" "}
-                            <span className="nums font-semibold text-ink-900">{total}</span> cars
+                            Showing{" "}
+                            <span className="nums font-semibold text-ink-900">
+                                {from}–{to}
+                            </span>{" "}
+                            of <span className="nums font-semibold text-ink-900">{total}</span> cars
                         </>
                     ) : (
                         "No cars match these filters"
                     )}
-                    {pending && <span className="ml-2 text-ink-400">· updating…</span>}
+                    {pending && <span className="ml-2 text-ink-500">· updating…</span>}
                 </p>
                 <label className="relative flex items-center gap-2 text-[13px] text-ink-500">
                     <span className="hidden sm:inline">Sort by</span>
                     <select
+                        aria-label="Sort cars"
                         value={filters.sort}
                         onChange={(e) => update({ sort: e.target.value })}
                         className="h-10 cursor-pointer appearance-none rounded-full border border-line-strong bg-white pr-9 pl-4 text-[13.5px] font-medium text-ink-900 outline-none focus:border-ink-900"
@@ -48,7 +72,11 @@ export default function InventoryToolbar({ total, from, to }) {
                             </option>
                         ))}
                     </select>
-                    <Icon name="chevron-down" size={15} className="pointer-events-none absolute right-3.5 text-ink-400" />
+                    <Icon
+                        name="chevron-down"
+                        size={15}
+                        className="pointer-events-none absolute right-3.5 text-ink-400"
+                    />
                 </label>
             </div>
 
@@ -64,7 +92,11 @@ export default function InventoryToolbar({ total, from, to }) {
                                 )}
                             >
                                 {p.label}
-                                <Icon name="close" size={13} className="text-ink-400 group-hover:text-crimson-600" />
+                                <Icon
+                                    name="close"
+                                    size={13}
+                                    className="text-ink-400 group-hover:text-crimson-600"
+                                />
                                 <span className="sr-only">Remove filter</span>
                             </button>
                         </li>

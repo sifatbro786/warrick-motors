@@ -6,6 +6,8 @@ import Button from "@/components/ui/Button";
 import { getCars, PAGE_SIZE } from "@/lib/services/car.service";
 import { parseCarFilters, serializeCarFilters } from "@/lib/filters/car-filters";
 import { cn } from "@/lib/utils/format";
+import JsonLd from "@/components/seo/JsonLd";
+import { itemListJsonLd } from "@/lib/seo/jsonld";
 
 /**
  * Server component: reads the request's searchParams (runtime data → must sit
@@ -19,6 +21,8 @@ export default async function InventoryResults({ searchParams }) {
 
     return (
         <div className="flex flex-col gap-6">
+            <h2 className="sr-only">Search results</h2>
+            {items.length > 0 && <JsonLd data={itemListJsonLd(items, { offset: from - 1 })} />}
             <InventoryToolbar total={total} from={from} to={to} />
 
             {items.length ? (
@@ -58,12 +62,25 @@ function Pagination({ filters, page, pageCount }) {
 function PageLink({ href, current, disabled, label, children }) {
     const cls = cn(
         "nums inline-flex h-10 min-w-10 items-center justify-center rounded-full px-3 text-sm font-semibold transition-colors",
-        current ? "bg-ink-900 text-white" : "border border-line-strong bg-white text-ink-800 hover:border-ink-900",
+        current
+            ? "bg-ink-900 text-white"
+            : "border border-line-strong bg-white text-ink-800 hover:border-ink-900",
         disabled && "pointer-events-none opacity-40",
     );
-    if (disabled) return <span className={cls} aria-hidden="true">{children}</span>;
+    if (disabled)
+        return (
+            <span className={cls} aria-hidden="true">
+                {children}
+            </span>
+        );
     return (
-        <Link href={href} aria-label={label} aria-current={current ? "page" : undefined} className={cls} scroll>
+        <Link
+            href={href}
+            aria-label={label}
+            aria-current={current ? "page" : undefined}
+            className={cls}
+            scroll
+        >
             {children}
         </Link>
     );
@@ -71,13 +88,16 @@ function PageLink({ href, current, disabled, label, children }) {
 
 function EmptyState() {
     return (
-        <div className="flex flex-col items-center rounded-[var(--radius-card)] border border-dashed border-line-strong bg-white px-6 py-16 text-center">
+        <div className="flex flex-col items-center rounded-card border border-dashed border-line-strong bg-white px-6 py-16 text-center">
             <span className="flex h-16 w-16 items-center justify-center rounded-full bg-paper-warm text-ink-700">
                 <Icon name="car" size={30} />
             </span>
-            <h2 className="mt-6 font-display text-2xl font-semibold tracking-tight">Not in stock right now</h2>
+            <h2 className="mt-6 font-display text-2xl font-semibold tracking-tight">
+                Not in stock right now
+            </h2>
             <p className="mt-2 max-w-md text-[15px] text-ink-500">
-                We import to order. Tell us the model, grade and colour you want and we&apos;ll send auction options within 48 hours.
+                We import to order. Tell us the model, grade and colour you want and we&apos;ll send
+                auction options within 48 hours.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <Button href="/pre-order" iconRight="arrow-right">
@@ -97,8 +117,11 @@ export function InventorySkeleton() {
             <div className="h-10 w-64 animate-pulse rounded-full bg-line" />
             <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
                 {Array.from({ length: 6 }).map((_, i) => (
-                    <div key={i} className="overflow-hidden rounded-[var(--radius-card)] border border-line bg-white">
-                        <div className="aspect-[4/3] animate-pulse bg-line" />
+                    <div
+                        key={i}
+                        className="overflow-hidden rounded-card border border-line bg-white"
+                    >
+                        <div className="aspect-4/3 animate-pulse bg-line" />
                         <div className="space-y-3 p-5">
                             <div className="h-3 w-16 animate-pulse rounded bg-line" />
                             <div className="h-5 w-3/4 animate-pulse rounded bg-line" />

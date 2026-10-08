@@ -61,7 +61,10 @@ export default function SiteHeader() {
                             {siteConfig.hours[0].days}, {siteConfig.hours[0].time}
                         </span>
                     </div>
-                    <a href={telHref(siteConfig.contact.hotline)} className="nums flex items-center gap-1.5 hover:text-white">
+                    <a
+                        href={telHref(siteConfig.contact.hotline)}
+                        className="nums flex items-center gap-1.5 hover:text-white"
+                    >
                         <Icon name="phone" size={14} className="text-gold-400" />
                         Hotline {siteConfig.contact.hotlineDisplay}
                     </a>
@@ -76,7 +79,7 @@ export default function SiteHeader() {
                         : "border-b border-line bg-white/95 shadow-[0_1px_0_rgb(10_17_30/0.02)] backdrop-blur-md",
                 )}
             >
-                <div className="container-page flex h-[72px] items-center justify-between gap-6">
+                <div className="container-page flex h-18 items-center justify-between gap-6">
                     <Logo tone={overlay ? "light" : "dark"} priority />
 
                     <nav aria-label="Primary" className="hidden lg:block">
@@ -88,13 +91,19 @@ export default function SiteHeader() {
                                         aria-current={isActive(item.href) ? "page" : undefined}
                                         className={cn(
                                             "relative rounded-full px-4 py-2 text-[14px] font-medium transition-colors",
-                                            overlay ? "text-white/85 hover:text-white" : "text-ink-600 hover:text-ink-900",
-                                            isActive(item.href) && (overlay ? "text-white" : "text-ink-900"),
+                                            overlay
+                                                ? "text-white/85 hover:text-white"
+                                                : "text-ink-600 hover:text-ink-900",
+                                            isActive(item.href) &&
+                                                (overlay ? "text-white" : "text-ink-900"),
                                         )}
                                     >
                                         {item.label}
                                         {isActive(item.href) && (
-                                            <span aria-hidden="true" className="absolute inset-x-4 -bottom-[1px] h-[2px] rounded-full bg-crimson-600" />
+                                            <span
+                                                aria-hidden="true"
+                                                className="absolute inset-x-4 -bottom-px h-0.5 rounded-full bg-crimson-600"
+                                            />
                                         )}
                                     </Link>
                                 </li>
@@ -109,14 +118,21 @@ export default function SiteHeader() {
                             rel="noopener noreferrer"
                             className={cn(
                                 "hidden h-10 items-center gap-2 rounded-full px-3.5 text-[13.5px] font-medium transition-colors sm:inline-flex",
-                                overlay ? "text-white hover:bg-white/10" : "text-ink-800 hover:bg-paper",
+                                overlay
+                                    ? "text-white hover:bg-white/10"
+                                    : "text-ink-800 hover:bg-paper",
                             )}
                         >
                             <Icon name="whatsapp" size={18} className="text-whatsapp" />
                             WhatsApp
                         </a>
                         <span className="hidden sm:block">
-                            <Button href="/showroom#visit" size="sm" className="h-10 px-4" iconRight="arrow-right">
+                            <Button
+                                href="/showroom#visit"
+                                size="sm"
+                                className="h-10 px-4"
+                                iconRight="arrow-right"
+                            >
                                 Book a Visit
                             </Button>
                         </span>
@@ -128,7 +144,9 @@ export default function SiteHeader() {
                             aria-label={open ? "Close menu" : "Open menu"}
                             className={cn(
                                 "inline-flex h-11 w-11 items-center justify-center rounded-full lg:hidden",
-                                overlay ? "text-white hover:bg-white/10" : "text-ink-900 hover:bg-paper",
+                                overlay
+                                    ? "text-white hover:bg-white/10"
+                                    : "text-ink-900 hover:bg-paper",
                             )}
                         >
                             <Icon name={open ? "close" : "menu"} size={22} />
@@ -141,7 +159,7 @@ export default function SiteHeader() {
             <div
                 id="mobile-menu"
                 hidden={!open}
-                className="fixed inset-x-0 top-[72px] bottom-0 z-30 overflow-y-auto bg-white lg:hidden"
+                className="fixed inset-x-0 top-18 bottom-0 z-30 overflow-y-auto bg-white lg:hidden"
             >
                 <nav aria-label="Mobile" className="container-page py-6">
                     <ul className="divide-y divide-line border-y border-line">
@@ -152,10 +170,16 @@ export default function SiteHeader() {
                                     className="flex items-center justify-between py-4 font-display text-2xl font-semibold tracking-tight text-ink-900"
                                 >
                                     <span>
-                                        <span className="nums mr-3 align-middle text-xs font-medium text-gold-600">0{i + 1}</span>
+                                        <span className="nums mr-3 align-middle text-xs font-medium text-gold-600">
+                                            0{i + 1}
+                                        </span>
                                         {item.label}
                                     </span>
-                                    <Icon name="arrow-up-right" size={20} className="text-ink-400" />
+                                    <Icon
+                                        name="arrow-up-right"
+                                        size={20}
+                                        className="text-ink-400"
+                                    />
                                 </Link>
                             </li>
                         ))}
@@ -164,10 +188,20 @@ export default function SiteHeader() {
                         <Button href="/showroom#visit" size="lg" iconRight="arrow-right">
                             Book a Showroom Visit
                         </Button>
-                        <Button href={buildWhatsAppLink()} variant="whatsapp" size="lg" icon="whatsapp">
+                        <Button
+                            href={buildWhatsAppLink()}
+                            variant="whatsapp"
+                            size="lg"
+                            icon="whatsapp"
+                        >
                             WhatsApp Inquiry
                         </Button>
-                        <Button href={telHref(siteConfig.contact.hotline)} variant="outline" size="lg" icon="phone">
+                        <Button
+                            href={telHref(siteConfig.contact.hotline)}
+                            variant="outline"
+                            size="lg"
+                            icon="phone"
+                        >
                             {siteConfig.contact.hotlineDisplay}
                         </Button>
                     </div>

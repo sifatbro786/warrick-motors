@@ -22,9 +22,15 @@ export default function FeaturedCars({ cars = [] }) {
                         </Button>
                     }
                 />
-                <Stagger className="mt-12 -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 no-scrollbar sm:mx-0 sm:grid sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 sm:grid-cols-2 xl:grid-cols-4" stagger={0.07}>
+                <Stagger
+                    className="mt-12 -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 no-scrollbar sm:mx-0 sm:grid sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 sm:grid-cols-2 xl:grid-cols-4"
+                    stagger={0.07}
+                >
                     {cars.map((car) => (
-                        <StaggerItem key={car.id} className="w-[84%] shrink-0 snap-start sm:w-auto h-auto">
+                        <StaggerItem
+                            key={car.id}
+                            className="w-[84%] shrink-0 snap-start sm:w-auto h-auto"
+                        >
                             <CarCard car={car} className="h-full" />
                         </StaggerItem>
                     ))}

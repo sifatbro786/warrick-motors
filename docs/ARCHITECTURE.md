@@ -36,3 +36,14 @@ docs/                   status + architecture
 - [ ] Replace `source()` and filtering in `car.service.js` with `Car.find(query).sort(sort).skip().limit().lean()`
 - [ ] Add `MONGODB_URI`, `SMTP_*` to `.env.local`
 - [ ] Admin routes under `app/(admin)/admin/*` with auth (proxy.js) — public components untouched
+
+## SEO control (dashboard-ready)
+- Every page: `export const generateMetadata = () => buildMetadata({ key: "<pageKey>", path: "/<route>" })`.
+- Meta strings live only in `lib/data/seo.js` → future `SeoSettings` + `PageSeo` collections; cars get optional `car.seo { title, description, keywords }`.
+- Admin "Save SEO" action → write Mongo → `revalidateTag("seo")` (and `"cars"` for car SEO).
+- Structured data builders in `lib/seo/jsonld.js`; render with `<JsonLd data={...} />` (escapes `<`).
+
+## Performance rules
+- Server components by default; client components only for interaction. Pass server-rendered children into client wrappers (e.g. `StatusTabs` panels).
+- Animations: `m.*` from framer-motion under `LazyMotion`; above-the-fold entrance animations in CSS.
+- Images: always `next/image` with `sizes`; only the first hero slide gets `preload`.

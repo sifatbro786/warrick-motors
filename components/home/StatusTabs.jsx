@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { EASE } from "@/components/motion/Reveal";
 import { cn } from "@/lib/utils/format";
 
@@ -30,7 +30,7 @@ export default function StatusTabs({ tabs = [], idPrefix = "status" }) {
                 role="tablist"
                 aria-label="Stock status"
                 onKeyDown={onKeyDown}
-                className="no-scrollbar flex gap-1 overflow-x-auto rounded-full border border-white/10 bg-white/[0.04] p-1.5 sm:inline-flex"
+                className="no-scrollbar flex gap-1 overflow-x-auto rounded-full border border-white/10 bg-white/4 p-1.5 sm:inline-flex"
             >
                 {tabs.map((t) => {
                     const selected = t.key === active;
@@ -50,17 +50,21 @@ export default function StatusTabs({ tabs = [], idPrefix = "status" }) {
                             )}
                         >
                             {selected && (
-                                <motion.span
+                                <m.span
                                     layoutId={`${idPrefix}-pill`}
                                     className="absolute inset-0 rounded-full bg-white"
                                     transition={{ type: "spring", stiffness: 380, damping: 34 }}
                                 />
                             )}
-                            <span className="relative text-[14px] font-semibold whitespace-nowrap">{t.label}</span>
+                            <span className="relative text-[14px] font-semibold whitespace-nowrap">
+                                {t.label}
+                            </span>
                             <span
                                 className={cn(
                                     "nums relative rounded-full px-2 py-0.5 text-[11px] font-semibold",
-                                    selected ? "bg-ink-900 text-gold-300" : "bg-white/10 text-white/70",
+                                    selected
+                                        ? "bg-ink-900 text-gold-300"
+                                        : "bg-white/10 text-white/70",
                                 )}
                             >
                                 {t.count}
@@ -71,7 +75,7 @@ export default function StatusTabs({ tabs = [], idPrefix = "status" }) {
             </div>
 
             <AnimatePresence mode="wait" initial={false}>
-                <motion.div
+                <m.div
                     key={current.key}
                     id={`${idPrefix}-panel-${current.key}`}
                     role="tabpanel"
@@ -83,7 +87,7 @@ export default function StatusTabs({ tabs = [], idPrefix = "status" }) {
                 >
                     {current.sub && <p className="mb-6 text-[15px] text-ink-300">{current.sub}</p>}
                     {current.panel}
-                </motion.div>
+                </m.div>
             </AnimatePresence>
         </div>
     );

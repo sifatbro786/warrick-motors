@@ -22,24 +22,32 @@ export default function CarCard({ car, preload = false, className }) {
     return (
         <article
             className={cn(
-                "group relative flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-card shadow-card",
-                "transition-[box-shadow,transform,border-color] duration-500 ease-[var(--ease-out-expo)]",
+                "group relative flex flex-col overflow-hidden rounded-card border border-line bg-card shadow-card",
+                "transition-[box-shadow,transform,border-color] duration-500 ease-out-expo",
                 "hover:-translate-y-1 hover:border-line-strong hover:shadow-card-hover",
                 className,
             )}
         >
             {/* Media */}
-            <div className="relative aspect-[4/3] overflow-hidden bg-ink-800">
+            <div className="relative aspect-4/3 overflow-hidden bg-ink-800">
                 <CarImage
                     src={cover?.src}
                     alt={cover?.alt || car.title}
                     sizes="(min-width: 1280px) 25vw, (min-width: 768px) 45vw, 100vw"
                     preload={preload}
-                    className="transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.06]"
+                    className="transition-transform duration-[1.2s] ease-out-expo group-hover:scale-[1.06]"
                 />
-                <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink-950/45 to-transparent" />
+                <div
+                    aria-hidden="true"
+                    className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-ink-950/45 to-transparent"
+                />
                 <div className="absolute top-3 left-3">
-                    <StockBadge status={car.stockStatus} location={car.location} size="sm" className="shadow-sm" />
+                    <StockBadge
+                        status={car.stockStatus}
+                        location={car.location}
+                        size="sm"
+                        className="shadow-sm"
+                    />
                 </div>
                 <span className="nums absolute top-3 right-3 rounded-md bg-ink-950/70 px-2 py-1 font-mono text-[10.5px] tracking-wider text-white/85 backdrop-blur-sm">
                     {car.stockNo}
@@ -56,7 +64,10 @@ export default function CarCard({ car, preload = false, className }) {
             <div className="flex flex-1 flex-col p-5">
                 <p className="eyebrow text-[10.5px] text-gold-600">{car.brand}</p>
                 <h3 className="mt-1.5 font-display text-[1.12rem] leading-snug font-semibold tracking-[-0.01em] text-ink-900">
-                    <Link href={href} className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none">
+                    <Link
+                        href={href}
+                        className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
+                    >
                         {car.year} {car.title.replace(`${car.brand} `, "")}
                     </Link>
                 </h3>
@@ -75,7 +86,11 @@ export default function CarCard({ car, preload = false, className }) {
                         className="group/btn inline-flex h-10 items-center justify-center gap-1.5 rounded-full bg-ink-900 px-4 text-[13px] font-medium text-white transition-colors hover:bg-ink-700"
                     >
                         View Details
-                        <Icon name="arrow-right" size={16} className="transition-transform group-hover/btn:translate-x-0.5" />
+                        <Icon
+                            name="arrow-right"
+                            size={16}
+                            className="transition-transform group-hover/btn:translate-x-0.5"
+                        />
                     </Link>
                     <a
                         href={telHref(siteConfig.contact.hotline)}

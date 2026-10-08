@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import Icon from "@/components/ui/Icon";
 import { useCarFilters, countActiveFilters } from "@/lib/hooks/useCarFilters";
 import { BUDGET_RANGES, STOCK_STATUS_META } from "@/lib/constants/inventory";
@@ -42,14 +42,16 @@ export default function CarFilterSidebar({ options }) {
                     <Icon name="sliders" size={18} />
                     Filters
                     {active > 0 && (
-                        <span className="nums rounded-full bg-gold-400 px-2 py-0.5 text-[11px] text-ink-900">{active}</span>
+                        <span className="nums rounded-full bg-gold-400 px-2 py-0.5 text-[11px] text-ink-900">
+                            {active}
+                        </span>
                     )}
                 </button>
             </div>
 
             {/* Desktop sidebar */}
             <aside aria-label="Filter cars" className="hidden lg:block">
-                <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-[var(--radius-card)] border border-line bg-white p-6 shadow-card no-scrollbar">
+                <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto rounded-card border border-line bg-white p-6 shadow-card no-scrollbar">
                     <FilterPanel {...state} options={options} active={active} />
                 </div>
             </aside>
@@ -57,9 +59,19 @@ export default function CarFilterSidebar({ options }) {
             {/* Mobile sheet */}
             <AnimatePresence>
                 {open && (
-                    <motion.div className="fixed inset-0 z-[70] lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                        <button type="button" aria-label="Close filters" onClick={() => setOpen(false)} className="absolute inset-0 bg-ink-950/60" />
-                        <motion.div
+                    <m.div
+                        className="fixed inset-0 z-70 lg:hidden"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <button
+                            type="button"
+                            aria-label="Close filters"
+                            onClick={() => setOpen(false)}
+                            className="absolute inset-0 bg-ink-950/60"
+                        />
+                        <m.div
                             role="dialog"
                             aria-modal="true"
                             aria-label="Filter cars"
@@ -69,7 +81,10 @@ export default function CarFilterSidebar({ options }) {
                             className="absolute inset-x-0 bottom-0 flex max-h-[88vh] flex-col rounded-t-3xl bg-white"
                         >
                             <div className="flex items-center justify-between border-b border-line px-5 py-4">
-                                <span className="mx-auto h-1 w-10 rounded-full bg-line-strong" aria-hidden="true" />
+                                <span
+                                    className="mx-auto h-1 w-10 rounded-full bg-line-strong"
+                                    aria-hidden="true"
+                                />
                             </div>
                             <div className="flex-1 overflow-y-auto px-5 pb-6">
                                 <FilterPanel {...state} options={options} active={active} />
@@ -83,8 +98,8 @@ export default function CarFilterSidebar({ options }) {
                                     {state.pending ? "Updating…" : "Show results"}
                                 </button>
                             </div>
-                        </motion.div>
-                    </motion.div>
+                        </m.div>
+                    </m.div>
                 )}
             </AnimatePresence>
         </>
@@ -97,14 +112,25 @@ function FilterPanel({ filters, update, toggleInList, reset, pending, options, a
     const models = singleBrand ? options.modelsByBrand[singleBrand] || [] : [];
 
     return (
-        <div className={cn("transition-opacity", pending && "opacity-70")} aria-busy={pending || undefined}>
+        <div
+            className={cn("transition-opacity", pending && "opacity-70")}
+            aria-busy={pending || undefined}
+        >
             <div className="flex items-center justify-between pt-1 pb-5">
                 <p className="font-display text-lg font-semibold text-ink-900">
                     Refine
-                    {pending && <span className="ml-2 align-middle text-[11px] font-medium text-ink-400">updating…</span>}
+                    {pending && (
+                        <span className="ml-2 align-middle text-[11px] font-medium text-ink-500">
+                            updating…
+                        </span>
+                    )}
                 </p>
                 {active > 0 && (
-                    <button type="button" onClick={reset} className="cursor-pointer text-[13px] font-semibold text-crimson-600 hover:text-crimson-700">
+                    <button
+                        type="button"
+                        onClick={reset}
+                        className="cursor-pointer text-[13px] font-semibold text-crimson-600 hover:text-crimson-700"
+                    >
                         Clear all ({active})
                     </button>
                 )}
@@ -112,7 +138,13 @@ function FilterPanel({ filters, update, toggleInList, reset, pending, options, a
 
             <Group legend="Availability">
                 <div className="grid gap-1.5">
-                    <RadioRow name="status" label="All stock" count={options.counts.total} checked={!filters.statusKey} onChange={() => update({ statusKey: null })} />
+                    <RadioRow
+                        name="status"
+                        label="All stock"
+                        count={options.counts.total}
+                        checked={!filters.statusKey}
+                        onChange={() => update({ statusKey: null })}
+                    />
                     {Object.entries(STOCK_STATUS_META).map(([status, m]) => (
                         <RadioRow
                             key={m.key}
@@ -129,9 +161,20 @@ function FilterPanel({ filters, update, toggleInList, reset, pending, options, a
 
             <Group legend="Budget">
                 <div className="grid gap-1.5">
-                    <RadioRow name="budget" label="Any budget" checked={!filters.budgetKey} onChange={() => update({ budgetKey: null })} />
+                    <RadioRow
+                        name="budget"
+                        label="Any budget"
+                        checked={!filters.budgetKey}
+                        onChange={() => update({ budgetKey: null })}
+                    />
                     {BUDGET_RANGES.map((b) => (
-                        <RadioRow key={b.key} name="budget" label={b.label} checked={filters.budgetKey === b.key} onChange={() => update({ budgetKey: b.key })} />
+                        <RadioRow
+                            key={b.key}
+                            name="budget"
+                            label={b.label}
+                            checked={filters.budgetKey === b.key}
+                            onChange={() => update({ budgetKey: b.key })}
+                        />
                     ))}
                 </div>
             </Group>
@@ -139,30 +182,44 @@ function FilterPanel({ filters, update, toggleInList, reset, pending, options, a
             <Group legend="Brand">
                 <div className="grid gap-1">
                     {options.brands.map((b) => (
-                        <label key={b} className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-[14px] text-ink-700 hover:bg-paper">
+                        <label
+                            key={b}
+                            className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-[14px] text-ink-700 hover:bg-paper"
+                        >
                             <span className="flex items-center gap-2.5">
                                 <input
                                     type="checkbox"
                                     checked={filters.brands.includes(b)}
                                     onChange={() => {
                                         // model only makes sense for a single brand — drop it when brands change
-                                        const next = filters.brands.includes(b) ? filters.brands.filter((x) => x !== b) : [...filters.brands, b];
+                                        const next = filters.brands.includes(b)
+                                            ? filters.brands.filter((x) => x !== b)
+                                            : [...filters.brands, b];
                                         update({ brands: next, model: null });
                                     }}
                                     className="h-4 w-4 cursor-pointer accent-ink-900"
                                 />
                                 {b}
                             </span>
-                            <span className="nums text-[12px] text-ink-400">{options.counts.byBrand[b]}</span>
+                            <span className="nums text-[12px] text-ink-500">
+                                {options.counts.byBrand[b]}
+                            </span>
                         </label>
                     ))}
                 </div>
                 {singleBrand && models.length > 0 && (
                     <div className="mt-3">
-                        <label className="text-[11px] font-semibold tracking-[0.12em] text-ink-400 uppercase" htmlFor="filter-model">
+                        <label
+                            className="text-[11px] font-semibold tracking-[0.12em] text-ink-500 uppercase"
+                            htmlFor="filter-model"
+                        >
                             {singleBrand} model
                         </label>
-                        <SelectBox id="filter-model" value={filters.model || ""} onChange={(v) => update({ model: v || null })}>
+                        <SelectBox
+                            id="filter-model"
+                            value={filters.model || ""}
+                            onChange={(v) => update({ model: v || null })}
+                        >
                             <option value="">All models</option>
                             {models.map((m) => (
                                 <option key={m} value={m}>
@@ -175,27 +232,51 @@ function FilterPanel({ filters, update, toggleInList, reset, pending, options, a
             </Group>
 
             <Group legend="Body style">
-                <ChipSet values={options.bodyTypes} selected={filters.bodyTypes} onToggle={(v) => toggleInList("bodyTypes", v)} />
+                <ChipSet
+                    values={options.bodyTypes}
+                    selected={filters.bodyTypes}
+                    onToggle={(v) => toggleInList("bodyTypes", v)}
+                />
             </Group>
 
             <Group legend="Fuel type">
-                <ChipSet values={options.fuelTypes} selected={filters.fuelTypes} onToggle={(v) => toggleInList("fuelTypes", v)} />
+                <ChipSet
+                    values={options.fuelTypes}
+                    selected={filters.fuelTypes}
+                    onToggle={(v) => toggleInList("fuelTypes", v)}
+                />
             </Group>
 
             <Group legend="Manufacturing year" last>
                 <div className="grid grid-cols-2 gap-2">
-                    <SelectBox ariaLabel="Year from" value={filters.yearMin || ""} onChange={(v) => update({ yearMin: v ? Number(v) : null })}>
+                    <SelectBox
+                        ariaLabel="Year from"
+                        value={filters.yearMin || ""}
+                        onChange={(v) => update({ yearMin: v ? Number(v) : null })}
+                    >
                         <option value="">From</option>
                         {yearOptions.map((y) => (
-                            <option key={y} value={y} disabled={filters.yearMax && y > filters.yearMax}>
+                            <option
+                                key={y}
+                                value={y}
+                                disabled={filters.yearMax && y > filters.yearMax}
+                            >
                                 {y}
                             </option>
                         ))}
                     </SelectBox>
-                    <SelectBox ariaLabel="Year to" value={filters.yearMax || ""} onChange={(v) => update({ yearMax: v ? Number(v) : null })}>
+                    <SelectBox
+                        ariaLabel="Year to"
+                        value={filters.yearMax || ""}
+                        onChange={(v) => update({ yearMax: v ? Number(v) : null })}
+                    >
                         <option value="">To</option>
                         {yearOptions.map((y) => (
-                            <option key={y} value={y} disabled={filters.yearMin && y < filters.yearMin}>
+                            <option
+                                key={y}
+                                value={y}
+                                disabled={filters.yearMin && y < filters.yearMin}
+                            >
                                 {y}
                             </option>
                         ))}
@@ -209,7 +290,9 @@ function FilterPanel({ filters, update, toggleInList, reset, pending, options, a
 function Group({ legend, children, last = false }) {
     return (
         <fieldset className={cn("py-5", !last && "border-b border-dashed border-line")}>
-            <legend className="mb-3 text-[11px] font-semibold tracking-[0.14em] text-ink-400 uppercase">{legend}</legend>
+            <legend className="mb-3 text-[11px] font-semibold tracking-[0.14em] text-ink-500 uppercase">
+                {legend}
+            </legend>
             {children}
         </fieldset>
     );
@@ -226,14 +309,29 @@ function RadioRow({ name, label, count, checked, onChange, tone }) {
             )}
         >
             <span className="flex items-center gap-2.5">
-                <input type="radio" name={name} checked={checked} onChange={onChange} className="sr-only" />
+                <input
+                    type="radio"
+                    name={name}
+                    checked={checked}
+                    onChange={onChange}
+                    className="sr-only"
+                />
                 <span
                     aria-hidden="true"
-                    className={cn("h-2 w-2 rounded-full", tone ? DOT[tone] : checked ? "bg-gold-400" : "border border-line-strong")}
+                    className={cn(
+                        "h-2 w-2 rounded-full",
+                        tone ? DOT[tone] : checked ? "bg-gold-400" : "border border-line-strong",
+                    )}
                 />
                 {label}
             </span>
-            {count != null && <span className={cn("nums text-[12px]", checked ? "text-gold-300" : "text-ink-400")}>{count}</span>}
+            {count != null && (
+                <span
+                    className={cn("nums text-[12px]", checked ? "text-gold-300" : "text-ink-500")}
+                >
+                    {count}
+                </span>
+            )}
         </label>
     );
 }
@@ -251,7 +349,9 @@ function ChipSet({ values, selected, onToggle }) {
                         onClick={() => onToggle(v)}
                         className={cn(
                             "inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition-colors",
-                            on ? "border-ink-900 bg-ink-900 text-white" : "border-line-strong text-ink-700 hover:border-ink-900",
+                            on
+                                ? "border-ink-900 bg-ink-900 text-white"
+                                : "border-line-strong text-ink-700 hover:border-ink-900",
                         )}
                     >
                         {on && <Icon name="check" size={13} />}
@@ -275,7 +375,11 @@ function SelectBox({ id, value, onChange, children, ariaLabel }) {
             >
                 {children}
             </select>
-            <Icon name="chevron-down" size={16} className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-ink-400" />
+            <Icon
+                name="chevron-down"
+                size={16}
+                className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-ink-400"
+            />
         </div>
     );
 }

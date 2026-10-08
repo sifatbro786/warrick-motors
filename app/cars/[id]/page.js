@@ -9,7 +9,9 @@ import { Breadcrumbs } from "@/components/layout/PageHeader";
 import SectionHeading, { Accent } from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import { getAllCarSlugs, getCarById, getRelatedCars } from "@/lib/services/car.service";
-import { formatBDT } from "@/lib/utils/format";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildCarMetadata } from "@/lib/seo/metadata";
+import { breadcrumbJsonLd, carJsonLd } from "@/lib/seo/jsonld";
 
 /** Prerender every known car; unknown ids render on first request (then cached). */
 export async function generateStaticParams() {
@@ -20,15 +22,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
     const { id } = await params;
     const car = await getCarById(id);
-    if (!car) return { title: "Car not found" };
-    const title = `${car.year} ${car.title} — ${formatBDT(car.price)}`;
-    const description = `${car.stockStatus} · ${car.mileage.toLocaleString("en-IN")} km · ${car.engineCc ? `${car.engineCc} cc` : "Electric"} · ${car.fuelType}. ${car.description}`;
-    return {
-        title,
-        description,
-        alternates: { canonical: `/cars/${car.slug}` },
-        openGraph: { title, description, images: car.images?.[0] ? [{ url: car.images[0].src, alt: car.images[0].alt }] : [] },
-    };
+    if (!car) return { title: "Car not found", robots: { index: false } };
+    return buildCarMetadata(car);
 }
 
 export default async function CarDetailPage({ params }) {
@@ -39,13 +34,26 @@ export default async function CarDetailPage({ params }) {
 
     return (
         <>
+            <JsonLd
+                data={[
+                    carJsonLd(car),
+                    breadcrumbJsonLd([
+                        { name: "Inventory", path: "/cars" },
+                        { name: car.brand, path: `/cars?brand=${encodeURIComponent(car.brand)}` },
+                        { name: `${car.year} ${car.title}`, path: `/cars/${car.slug}` },
+                    ]),
+                ]}
+            />
             <section className="bg-paper pt-8 pb-14 md:pb-20">
                 <div className="container-page">
                     <Breadcrumbs
                         className="mb-6"
                         items={[
                             { label: "Inventory", href: "/cars" },
-                            { label: car.brand, href: `/cars?brand=${encodeURIComponent(car.brand)}` },
+                            {
+                                label: car.brand,
+                                href: `/cars?brand=${encodeURIComponent(car.brand)}`,
+                            },
                             { label: `${car.year} ${car.title}` },
                         ]}
                     />
@@ -53,7 +61,13 @@ export default async function CarDetailPage({ params }) {
                         <CarGallery
                             images={car.images}
                             title={`${car.year} ${car.title}`}
-                            badge={<StockBadge status={car.stockStatus} location={car.location} className="shadow-sm" />}
+                            badge={
+                                <StockBadge
+                                    status={car.stockStatus}
+                                    location={car.location}
+                                    className="shadow-sm"
+                                />
+                            }
                         />
                         <div className="lg:sticky lg:top-24 lg:self-start">
                             <PurchasePanel car={car} />

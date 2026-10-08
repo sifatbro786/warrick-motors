@@ -16,7 +16,13 @@ export default function BrandMark({ brand, size = 56, className }) {
             style={{ width: size, height: size }}
         >
             {brand.logo ? (
-                <Image src={brand.logo} alt="" width={size} height={size} className="h-[62%] w-[62%] object-contain" />
+                <Image
+                    src={brand.logo}
+                    alt=""
+                    width={size}
+                    height={size}
+                    className="h-[62%] w-[62%] object-contain"
+                />
             ) : (
                 <span
                     className="font-display font-extrabold tracking-[-0.04em] text-ink-700"
@@ -26,7 +32,10 @@ export default function BrandMark({ brand, size = 56, className }) {
                 </span>
             )}
             {/* inner hairline ring — reads like a badge, not a placeholder */}
-            <span aria-hidden="true" className="absolute inset-[3px] rounded-full border border-line" />
+            <span
+                aria-hidden="true"
+                className="absolute inset-0.75 rounded-full border border-line"
+            />
         </span>
     );
 }

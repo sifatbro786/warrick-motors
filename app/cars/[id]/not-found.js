@@ -9,9 +9,12 @@ export default function CarNotFound() {
                     <Icon name="car" size={30} />
                 </span>
                 <p className="eyebrow mt-8 text-gold-600">Stock not found</p>
-                <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">This car has been sold or moved.</h1>
+                <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+                    This car has been sold or moved.
+                </h1>
                 <p className="mt-3 max-w-md text-[15px] text-ink-500">
-                    Good cars go quickly. Browse what&apos;s in the showroom now, or ask us to import the same model for you.
+                    Good cars go quickly. Browse what&apos;s in the showroom now, or ask us to
+                    import the same model for you.
                 </p>
                 <div className="mt-8 flex flex-wrap justify-center gap-3">
                     <Button href="/cars" iconRight="arrow-right">
