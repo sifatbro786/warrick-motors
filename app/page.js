@@ -1,39 +1,55 @@
-import CarCard from "@/components/cars/CarCard";
-import SectionHeading, { Accent } from "@/components/ui/SectionHeading";
-import Button from "@/components/ui/Button";
-import { getFeaturedCars } from "@/lib/services/car.service";
+import ShowroomHero from "@/components/home/ShowroomHero";
+import StatsBand from "@/components/home/StatsBand";
+import BrowseByBrand from "@/components/home/BrowseByBrand";
+import FeaturedCars from "@/components/home/FeaturedCars";
+import StockStatusSection from "@/components/home/StockStatusSection";
+import WhyWarrick from "@/components/home/WhyWarrick";
+import ShowroomExperience from "@/components/home/ShowroomExperience";
+import DeliveriesTestimonials from "@/components/home/DeliveriesTestimonials";
+import PreOrderCTA from "@/components/home/PreOrderCTA";
+import { getFeaturedCars, getCarsByStatus, getFilterOptions } from "@/lib/services/car.service";
+import {
+    getHeroSlides,
+    getCompanyStats,
+    getBrandShowcase,
+    getWhyWarrick,
+    getShowroomImage,
+    getDeliveries,
+    getTestimonials,
+} from "@/lib/services/content.service";
+import { siteConfig } from "@/lib/config/site";
 
 /**
- * PHASE 1 PLACEHOLDER — verifies tokens, fonts, layout shell, data layer and
- * CarCard end-to-end. Replaced by the full home page (components/home/*) in Phase 2.
+ * Section rhythm (never all-white):
+ * hero(ink) → search+facts(ink-950) → brands(stone) → featured(sand) → status(ink)
+ * → why(stone) → showroom(ink-950) → deliveries(sand) → pre-order(crimson) → footer(ink)
  */
 export default async function HomePage() {
-    const cars = await getFeaturedCars(8);
+    const [slides, stats, filterOptions, brandTiles, featured, byStatus, why, showroomImage, deliveries, testimonials] =
+        await Promise.all([
+            getHeroSlides(),
+            getCompanyStats(),
+            getFilterOptions(),
+            getBrandShowcase(),
+            getFeaturedCars(4),
+            getCarsByStatus(4),
+            getWhyWarrick(),
+            getShowroomImage(),
+            getDeliveries(),
+            getTestimonials(),
+        ]);
 
     return (
-        <section className="paper-grain py-20 md:py-28">
-            <div className="container-page">
-                <SectionHeading
-                    index="01"
-                    eyebrow="Featured Showroom Cars"
-                    title={
-                        <>
-                            Hand-picked imports, <Accent>ready</Accent> for Dhaka roads.
-                        </>
-                    }
-                    description="Every unit is auction-sheet verified with genuine mileage. Prices in BDT, documents in your hand."
-                    action={
-                        <Button href="/cars" variant="outline" iconRight="arrow-right">
-                            View full inventory
-                        </Button>
-                    }
-                />
-                <div className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-                    {cars.map((car, i) => (
-                        <CarCard key={car.id} car={car} preload={i < 2} />
-                    ))}
-                </div>
-            </div>
-        </section>
+        <>
+            <ShowroomHero slides={slides} />
+            <StatsBand stats={stats} filterOptions={filterOptions} />
+            <BrowseByBrand tiles={brandTiles} brands={filterOptions.brands} counts={filterOptions.counts.byBrand} />
+            <FeaturedCars cars={featured} />
+            <StockStatusSection byStatus={byStatus} />
+            <WhyWarrick points={why.points} image={why.image} />
+            <ShowroomExperience image={showroomImage} showrooms={siteConfig.showrooms} hours={siteConfig.hours} />
+            <DeliveriesTestimonials deliveries={deliveries} testimonials={testimonials} />
+            <PreOrderCTA />
+        </>
     );
 }

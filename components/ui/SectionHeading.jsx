@@ -1,11 +1,13 @@
 import { cn } from "@/lib/utils/format";
 
+export { default as Accent } from "@/components/ui/Accent";
+
 /**
  * Editorial section header:
  *   01 ——— INVENTORY
- *   Ready to drive, <em>today.</em>
+ *   Ready to drive, [today] ← <Accent>: gold colour + drawn underline
  *
- * `title` accepts a node so one word can be wrapped in <Accent> (serif italic).
+ * `title` accepts a node so one word can be wrapped in <Accent>.
  */
 export default function SectionHeading({
     index,
@@ -57,12 +59,5 @@ export default function SectionHeading({
             </div>
             {action && <div className="shrink-0">{action}</div>}
         </div>
-    );
-}
-
-/** Serif italic accent word — use once per heading, max. */
-export function Accent({ children, className }) {
-    return (
-        <em className={cn("font-serif font-normal italic tracking-[-0.01em] text-[1.08em]", className)}>{children}</em>
     );
 }

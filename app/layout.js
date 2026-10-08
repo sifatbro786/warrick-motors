@@ -1,8 +1,9 @@
 import "./globals.css";
-import { jakarta, geist, instrument } from "./fonts";
+import { jakarta, geist } from "./fonts";
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
 import FloatingWhatsApp from "@/components/layout/FloatingWhatsApp";
+import MotionProvider from "@/components/motion/MotionProvider";
 import { siteConfig } from "@/lib/config/site";
 
 export const metadata = {
@@ -27,7 +28,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en" className={`${jakarta.variable} ${geist.variable} ${instrument.variable} h-full`}>
+        <html lang="en" className={`${jakarta.variable} ${geist.variable} h-full`}>
             <body className="flex min-h-full flex-col" suppressHydrationWarning>
                 <a
                     href="#main"
@@ -35,12 +36,14 @@ export default function RootLayout({ children }) {
                 >
                     Skip to content
                 </a>
-                <SiteHeader />
-                <main id="main" className="flex-1">
-                    {children}
-                </main>
-                <SiteFooter />
-                <FloatingWhatsApp />
+                <MotionProvider>
+                    <SiteHeader />
+                    <main id="main" className="flex-1">
+                        {children}
+                    </main>
+                    <SiteFooter />
+                    <FloatingWhatsApp />
+                </MotionProvider>
             </body>
         </html>
     );

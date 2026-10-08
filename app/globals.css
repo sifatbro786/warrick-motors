@@ -2,8 +2,9 @@
 
 /* =============================================================================
    WARRICK MOTORS — DESIGN TOKENS
-   Palette: matte navy (luxury header/bands) · warm paper body · white cards ·
-            crimson for the single primary action · logo gold as a quiet accent.
+   Palette: matte navy (luxury header/bands) · warm stone body (never plain white) ·
+            white cards · crimson for the single primary action · logo gold accent.
+   Section rhythm: dark (ink) → stone → sand → ink … so the page never reads "all white".
    Rule of thumb: crimson = "do this", gold = "this is premium", never both on
    one element.
    ========================================================================== */
@@ -12,7 +13,6 @@
     /* ---- Typography (font files wired in app/fonts.js) ---- */
     --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
     --font-display: var(--font-jakarta), var(--font-geist), ui-sans-serif, sans-serif;
-    --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
 
     /* ---- Ink (navy) ---- */
     --color-ink-950: #070c16;
@@ -25,11 +25,13 @@
     --color-ink-300: #a7b1c2;
 
     /* ---- Paper & surfaces ---- */
-    --color-paper: #f8fafc; /* body */
-    --color-paper-warm: #f3f1ec; /* editorial bands */
+    --color-paper: #f1eee8; /* body — warm stone */
+    --color-paper-warm: #e8e2d6; /* sand — editorial bands */
+    --color-sand-300: #d9cfbd;
+    --color-mist: #e5e9ef; /* cool slate-tinted band */
     --color-card: #ffffff;
-    --color-line: #e2e8f0;
-    --color-line-strong: #cbd5e1;
+    --color-line: #e2ddd3;
+    --color-line-strong: #cdc5b6;
 
     /* ---- Crimson (CTA) ---- */
     --color-crimson-50: #fff1f3;
@@ -73,6 +75,10 @@
     @keyframes marquee {
         from { transform: translateX(0); }
         to { transform: translateX(-50%); }
+    }
+    @keyframes progress {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
     }
     @keyframes fade-up {
         from { opacity: 0; transform: translateY(18px); }

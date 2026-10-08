@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils/format";
 
 /**
  * Routes whose first section is a dark full-bleed hero → header starts transparent.
- * Phase 2 adds "/" once ShowroomHero (which pulls itself under the header) exists.
+ * The hero must pull itself under the header (ShowroomHero uses -mt-[72px]).
  */
-const OVERLAY_ROUTES = new Set([]);
+const OVERLAY_ROUTES = new Set(["/"]);
 
 export default function SiteHeader() {
     const pathname = usePathname();
